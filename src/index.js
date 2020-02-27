@@ -27,7 +27,11 @@ const tripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/191
   .then(response => response.json())
   .then(data => data.trips)
 
+let signInButton = $('#sign-in');
 let allData, destination, trip, traveler;
+
+signInButton.on('click', signUserIn);
+
 
 $(document).ready(() => {
   Promise.all([travlersData, destinationsData, tripsData])
@@ -62,6 +66,7 @@ let allTravelers = () => {
   });
 };
 
+//should probably be moved to a DOMupdates.js file
 let createDestinationCard = (destination) => {
   $('.destination-cards').append(`<div>
     <p>${destination.name}</p>
@@ -69,3 +74,19 @@ let createDestinationCard = (destination) => {
     <p>${destination.estimatedLodgingCostPerDay}</p>
     <p>${destination.estimatedFlightCostPerPerson}</p>`)
 };
+
+
+function signUserIn() {
+  $('#home').append(`<section id="sign-in-form">
+    <form>
+    <label for="user">
+      <input id="user" type="email" placeholder="username" required>
+    </label>
+    <label for="password">
+      <input id="password" type="password" placeholder="Password" required>
+    </label>
+    <button type='submit'>Sign In</button>
+    </form>
+  </section>`)
+  console.log("hello");
+}
