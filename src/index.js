@@ -27,7 +27,13 @@ const tripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/191
   .then(response => response.json())
   .then(data => data.trips)
 
+let signInButton = $('#sign-in');
+let landingPageHome = $('main');
 let allData, destination, trip, traveler;
+
+signInButton.on('click', displaySignInForm);
+landingPageHome.on('click', fireEventsOnMain);
+
 
 $(document).ready(() => {
   Promise.all([travlersData, destinationsData, tripsData])
@@ -62,6 +68,7 @@ let allTravelers = () => {
   });
 };
 
+//should probably be moved to a DOMupdates.js file
 let createDestinationCard = (destination) => {
   $('.destination-cards').append(`<div>
     <p>${destination.name}</p>
@@ -69,3 +76,41 @@ let createDestinationCard = (destination) => {
     <p>${destination.estimatedLodgingCostPerDay}</p>
     <p>${destination.estimatedFlightCostPerPerson}</p>`)
 };
+
+//DOMUpdates.js file
+function displaySignInForm() {
+//there's already a from, don't add another
+
+  $('#home').append(`<section id="sign-in-form">
+    <form>
+    <label for="user">
+      <input id="user" type="text" placeholder="username" required>
+    </label>
+    <label for="password">
+      <input id="password" type="password" placeholder="Password" required>
+    </label>
+    <button id="sign-in-submit" type='button'>Sign In</button>
+    </form>
+    <p>Admin click <a href="">here</a> to sign in.
+  </section>`)
+}
+
+function signInUser() {
+  let userInput = $('#user').val();
+  let passwordInput = $('#password').val();
+  if(passwordInput === `customer${userInput}`) {
+    //Display a new page
+    console.log('Do the thing');
+  } else {
+    alert('Your username or passowrd is not correct.')
+  }
+}
+
+function fireEventsOnMain(event) {
+  event.preventDefault();
+  if (event.target.id === 'sign-in-submit') {
+    signInUser();
+  } else if (event.target.parentElement !== 'form') {
+    $('#sign-in-form').remove();
+  }
+}
