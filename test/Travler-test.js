@@ -2,9 +2,15 @@ import { expect } from 'chai';
 import spies from 'chai-spies';
 import Traveler from '../src/traveler.js';
 
-let traveler;
+let travelerData, traveler;
+
 beforeEach(() => {
-  traveler = new Traveler(1, "Ham Leadbeater", "relaxer");
+  travelerData = [{
+  "id": 1,
+  "name": "Ham Leadbeater",
+  "travelerType": "relaxer"
+  }];
+  traveler = new Traveler(travelerData[0]);
 });
 
 describe('Traveler', () => {
