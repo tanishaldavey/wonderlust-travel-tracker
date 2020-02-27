@@ -12,6 +12,7 @@ import './css/styles.scss';
 import './images/w-icon.png'
 
 import Destination from './Destination.js'
+import Trip from './Trip.js'
 
 const travlersData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/travelers/travelers')
   .then(response => response.json())
@@ -25,7 +26,7 @@ const tripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/191
   .then(response => response.json())
   .then(data => data.trips)
 
-let allData, destination;
+let allData, destination, trip;
 
 $(document).ready(() => {
   Promise.all([travlersData, destinationsData, tripsData])
@@ -36,16 +37,20 @@ $(document).ready(() => {
       allData.trips = data[2];
       return allData;
     })
-    .then(createDestinations);
+    .then(createDestinations)
+    .then(createTrips)
 })
-
-//loop over all the destination data
-//for each of them, map it to instatiate it
-//and create a card for each of them
 
 let createDestinations = () => {
   allData.destinations.map(destinationData => {
      destination = new Destination(destinationData)
   });
-  console.log(allData.destinations)
+  console.log('destinations:::', allData.destinations)
+}
+
+let createTrips = () => {
+  allData.trips.map(tripData => {
+    trip = new Trip(tripData)
+  });
+  console.log('trips::::', allData.trips);
 }
