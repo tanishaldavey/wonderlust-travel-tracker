@@ -1,0 +1,63 @@
+@import 'base';
+
+// GENERAL STYLING FOR PAGE
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+//STYLING FOR HEADER
+header {
+  display: flex;
+  font-size: 1.5em;
+  justify-content: space-between;
+  height: 10vh;
+  padding: 0 2%;
+}
+
+header img {
+  height: 50px;
+  margin-top: 1%;
+  width: auto;
+}
+
+header section {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5%;
+  width: 30%;
+}
+
+#sign-in {
+  background: red;
+  color: white;
+  cursor: pointer;
+  font-size: .8em;
+  border: none;
+  width: 30%;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+//STYLING FOR LANDING PAGE MAIN
+main { 
+  background: url('../images/jessica-f-973vRak-llM-unsplash.jpg') center center / 100vw auto no-repeat;
+  height: 90vh;
+  padding: 0 2em;
+}
+
+h1 {
+  color: #fff;
+  font-size: 15em;
+}
+
+h2 {
+  color: #e5e5e5;
+  font-style: italic;
+  font-size: 3em;
+  margin-top: -3%;
+  text-align: center;
+}
