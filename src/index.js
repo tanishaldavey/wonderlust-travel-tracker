@@ -87,6 +87,6 @@ function signUserIn() {
     </label>
     <button type='submit'>Sign In</button>
     </form>
+    <p>Admin click <a href="">here</a> to sign in.
   </section>`)
-  console.log("hello");
 }
