@@ -1,0 +1,44 @@
+@import 'base';
+
+// GENERAL STYLING FOR PAGE
+* {
+  box-sizing: border-box;
+  font-size: 1.1em;
+  margin: 0;
+  padding: 0;
+}
+
+//STYLING FOR HEADER
+header {
+  display: flex;
+  justify-content: space-between;
+  height: 10vh;
+}
+
+header img {
+  height: 50px;
+  margin-top: 1%;
+  width: auto;
+}
+
+header section {
+  display: flex;
+  justify-content: space-around;
+  padding: 1.5%;
+  width: 30%;
+}
+
+#sign-in {
+  background: red;
+  color: white;
+  cursor: pointer;
+  font-size: .8em;
+  border: none;
+  width: 30%;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+//STYLING FOR LANDING PAGE MAIN
