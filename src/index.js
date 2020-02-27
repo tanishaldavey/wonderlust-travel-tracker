@@ -13,6 +13,7 @@ import './images/w-icon.png'
 
 import Destination from './Destination.js'
 import Trip from './Trip.js'
+import Traveler from './Traveler.js'
 
 const travlersData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/travelers/travelers')
   .then(response => response.json())
@@ -26,7 +27,7 @@ const tripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/191
   .then(response => response.json())
   .then(data => data.trips)
 
-let allData, destination, trip;
+let allData, destination, trip, traveler;
 
 $(document).ready(() => {
   Promise.all([travlersData, destinationsData, tripsData])
@@ -37,20 +38,34 @@ $(document).ready(() => {
       allData.trips = data[2];
       return allData;
     })
-    .then(createDestinations)
-    .then(createTrips)
+    .then(allDestinations)
+    .then(allTrips)
+    .then(allTravelers)
 })
 
-let createDestinations = () => {
-  allData.destinations.map(destinationData => {
+let allDestinations = () => {
+  return allData.destinations.map(destinationData => {
      destination = new Destination(destinationData)
+     createDestinationCard(destination);
   });
-  console.log('destinations:::', allData.destinations)
-}
+};
 
-let createTrips = () => {
-  allData.trips.map(tripData => {
+let allTrips = () => {
+  return allData.trips.map(tripData => {
     trip = new Trip(tripData)
   });
-  console.log('trips::::', allData.trips);
-}
+};
+
+let allTravelers = () => {
+  return allData.travelers.map(travelersData => {
+    traveler = new Traveler(travelersData)
+  });
+};
+
+let createDestinationCard = (destination) => {
+  $('.destination-cards').append(`<div>
+    <p>${destination.name}</p>
+    <img src=${destination.image} alt=${destination.alt}>
+    <p>${destination.estimatedLodgingCostPerDay}</p>
+    <p>${destination.estimatedFlightCostPerPerson}</p>`)
+};
