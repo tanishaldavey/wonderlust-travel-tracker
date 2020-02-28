@@ -23,8 +23,8 @@ beforeEach(() => {
     "date": "2020/06/29",
     "duration": 9,
     "status": "approved"
-    },
-    {
+  },
+  {
     "id": 40,
     "userID": 29,
     "destinationID": 50,
@@ -32,8 +32,8 @@ beforeEach(() => {
     "date": "2020/10/31",
     "duration": 13,
     "status": "approved"
-    },
-    {
+  },
+  {
     "id": 192,
     "userID": 29,
     "destinationID": 48,
@@ -41,8 +41,8 @@ beforeEach(() => {
     "date": "2019/09/24",
     "duration": 17,
     "status": "approved"
-    },
-    {
+  },
+  {
     "id": 200,
     "userID": 29,
     "destinationID": 23,
@@ -50,8 +50,8 @@ beforeEach(() => {
     "date": "2020/06/29",
     "duration": 7,
     "status": "approved"
-    },
-    {
+  },
+  {
     "id": 2,
     "userID": 35,
     "destinationID": 25,
@@ -59,7 +59,7 @@ beforeEach(() => {
     "date": "2020/10/04",
     "duration": 18,
     "status": "pending"
-    }];
+  }];
       travelerData = [{
       "id": 1,
       "name": "Ham Leadbeater",
@@ -75,9 +75,9 @@ beforeEach(() => {
     "name": "Lorilyn Frostdick",
     "travelerType": "shopper"
     }];
-  traveler1 = new Traveler(travelerData[0]);
-  traveler2 = new Traveler(travelerData[1]);
-  traveler3 = new Traveler(travelerData[2]);
+  traveler1 = new Traveler(travelerData[0], tripsData);
+  traveler2 = new Traveler(travelerData[1], tripsData);
+  traveler3 = new Traveler(travelerData[2], tripsData);
 });
 
 describe('Traveler', () => {
@@ -98,20 +98,32 @@ describe('Traveler', () => {
   });
 
   it('should be able to list trips taken in the past', () => {
+    traveler1.getPastTrips();
+    traveler2.getPastTrips();
+    traveler3.getPastTrips();
+
     expect(traveler1.pastTrips).to.deep.equal([]);
     expect(traveler2.pastTrips).to.deep.equal([tripsData[3]]);
     expect(traveler3.pastTrips).to.deep.equal([]);
   });
 
   it('should be able to list trips that are pending', () => {
+    traveler1.getPendingTrips();
+    traveler2.getPendingTrips();
+    traveler3.getPendingTrips();
+
     expect(traveler1.pendingTrips).to.deep.equal([]);
     expect(traveler2.pendingTrips).to.deep.equal([]);
     expect(traveler3.pendingTrips).to.deep.equal([tripsData[5]]);
   });
 
   it('should be able to list (approved) trips that are upcoming', () => {
-      expect(traveler1.upcomingTrips).to.deep.equal([tripsData[0]]);
-      expect(traveler2.upcomingTrips).to.deep.equal([tripsData[1], tripsData[2], tripsData[4]]);
-      expect(traveler3.upcomingTrips).to.deep.equal([]);
+    traveler1.getApprovedUpcomingTrips();
+    traveler2.getApprovedUpcomingTrips();
+    traveler3.getApprovedUpcomingTrips();
+
+    expect(traveler1.upcomingTrips).to.deep.equal([tripsData[0]]);
+    expect(traveler2.upcomingTrips).to.deep.equal([tripsData[1], tripsData[2], tripsData[4]]);
+    expect(traveler3.upcomingTrips).to.deep.equal([]);
   });
 });
