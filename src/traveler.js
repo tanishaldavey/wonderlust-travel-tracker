@@ -16,8 +16,20 @@ class Traveler {
       return trip.userID === this.id;
     });
   }
-
   
+  determineTripDateDifference() {
+    const allTrips = this.getAllTripsForUser();
+    let today = moment();
+    let tripDate;
+    let dateDifference;
+    return allTrips.map(trip => {
+      tripDate = moment(trip.date)
+      return {
+        "tripID": trip.id,
+        "dateDifference": today.diff(tripDate, 'days')
+      }
+    });
+  }
 }
 
 export default Traveler;
