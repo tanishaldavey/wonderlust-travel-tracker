@@ -73,6 +73,13 @@ class Traveler {
       return this.upcomingTrips;
     }, this.upcomingTrips);
   }
+
+  getApprovedUpcomingTrips() {
+    let allUpcomingTrips = this.getAllUpcomingTrips();
+    return this.upcomingTrips = allUpcomingTrips.filter(upcomingTrip => {
+      return upcomingTrip.status === 'approved'
+    });
+  }
 }
 
 export default Traveler;
