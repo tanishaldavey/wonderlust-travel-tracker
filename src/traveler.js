@@ -56,6 +56,23 @@ class Traveler {
       return this.pendingTrips;
     }, this.pendingTrips);
   }
+
+  getAllUpcomingTrips() {
+    let dateDifferences = this.determineTripDateDifference();
+    let allTripsForUser = this.getAllTripsForUser();
+    let upcomingTrip;
+    let pendingTrips = this.getPendingTrips();
+
+    return dateDifferences.reduce((upcomingTrips, trip) => {
+      if(trip.dateDifference < 0) {
+        upcomingTrip = allTripsForUser.find(singleTrip => {
+          return singleTrip.id === trip.tripID;
+        })
+        this.upcomingTrips.push(upcomingTrip)
+      }
+      return this.upcomingTrips;
+    }, this.upcomingTrips);
+  }
 }
 
 export default Traveler;
