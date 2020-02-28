@@ -46,6 +46,16 @@ class Traveler {
       return this.pastTrips;
     }, this.pastTrips);
   }
+
+  getPendingTrips() {
+    let allTripsForUser = this.getAllTripsForUser();
+    return allTripsForUser.reduce((pendingTrips, trip) => {
+      if(trip.status === 'pending') {
+        this.pendingTrips.push(trip)
+      }
+      return this.pendingTrips;
+    }, this.pendingTrips);
+  }
 }
 
 export default Traveler;
