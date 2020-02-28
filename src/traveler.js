@@ -16,7 +16,7 @@ class Traveler {
       return trip.userID === this.id;
     });
   }
-  
+
   determineTripDateDifference() {
     const allTrips = this.getAllTripsForUser();
     let today = moment();
@@ -29,6 +29,22 @@ class Traveler {
         "dateDifference": today.diff(tripDate, 'days')
       }
     });
+  }
+
+  getPastTrips() {
+    let dateDifferences = this.determineTripDateDifference();
+    let allTripsForUser = this.getAllTripsForUser();
+    let pastTrip;
+
+    return dateDifferences.reduce((pastTrips, trip) => {
+      if(trip.dateDifference > 0) {
+        pastTrip = allTripsForUser.find(singleTrip => {
+          return singleTrip.id === trip.tripID
+        })
+        this.pastTrips.push(pastTrip)
+      }
+      return this.pastTrips;
+    }, this.pastTrips);
   }
 }
 
