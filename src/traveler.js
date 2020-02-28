@@ -4,6 +4,9 @@ class Traveler {
     this.name = travelerData.name;
     this.travelerType = travelerData.travelerType;
     this.tripsData = tripsData;
+    this.pastTrips = [];
+    this.pendingTrips = [];
+    this.upcomingTrips = [];
   }
 }
 
