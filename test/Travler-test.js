@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import spies from 'chai-spies';
-import Traveler from '../src/traveler.js';
+import Traveler from '../src/Traveler.js';
+import Trip from '../src/Trip.js'
 
 let tripsData, travelerData, traveler1, traveler2, traveler3;
 
@@ -95,5 +96,17 @@ describe('Traveler', () => {
 
   it('should have a travlerType', () => {
     expect(traveler1.travelerType).to.equal("relaxer");
+  });
+
+  it('should be able to list trips taken in the past', () => {
+
+  });
+
+  it('should be able to list trips that are pending', () => {
+
+  });
+  
+  it('should be able to list (approved) trips that are upcoming', () => {
+
   });
 });
