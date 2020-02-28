@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 class Traveler {
   constructor(travelerData, tripsData) {
     this.id = travelerData.id;
@@ -8,6 +10,14 @@ class Traveler {
     this.pendingTrips = [];
     this.upcomingTrips = [];
   }
+
+  getAllTripsForUser() {
+    return this.tripsData.filter(trip => {
+      return trip.userID === this.id;
+    });
+  }
+
+  
 }
 
 export default Traveler;
