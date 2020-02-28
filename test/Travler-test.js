@@ -58,8 +58,7 @@ beforeEach(() => {
     "travelers": 5,
     "date": "2020/10/04",
     "duration": 18,
-    "status": "pending",
-    "suggestedActivities": []
+    "status": "pending"
     }];
       travelerData = [{
       "id": 1,
@@ -99,14 +98,20 @@ describe('Traveler', () => {
   });
 
   it('should be able to list trips taken in the past', () => {
-
+    expect(traveler1.pastTrips).to.deep.equal([]);
+    expect(traveler2.pastTrips).to.deep.equal([tripsData[3]]);
+    expect(traveler3.pastTrips).to.deep.equal([]);
   });
 
   it('should be able to list trips that are pending', () => {
-
+    expect(traveler1.pendingTrips).to.deep.equal([]);
+    expect(traveler2.pendingTrips).to.deep.equal([]);
+    expect(traveler3.pendingTrips).to.deep.equal([tripsData[5]]);
   });
-  
-  it('should be able to list (approved) trips that are upcoming', () => {
 
+  it('should be able to list (approved) trips that are upcoming', () => {
+      expect(traveler1.upcomingTrips).to.deep.equal([tripsData[0]]);
+      expect(traveler2.upcomingTrips).to.deep.equal([tripsData[1], tripsData[2], tripsData[4]]);
+      expect(traveler3.upcomingTrips).to.deep.equal([]);
   });
 });
