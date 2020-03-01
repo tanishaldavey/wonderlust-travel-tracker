@@ -68,11 +68,11 @@ describe('TravelAgent', () => {
   });
 
   it('should be able to see new trip requests (pending trip requests)', () => {
-    expect(travelAgent.listNewTripRequest()).to.deep.equal([tripsData[5]]);
+    expect(travelAgent.listNewTripRequests()).to.deep.equal([tripsData[5]]);
   });
 
-  it.skip('should be able to calculate total income generated this year (10% of user trip costs)', () => {
-    expect(travelAgent.calculateIncomeForYear()).to.equal();
+  it('should be able to calculate total income generated this year (10% of user trip costs)', () => {
+    expect(travelAgent.calculateIncomeForYear()).to.equal(8832);
   });
 
   it.skip('should be able to see the number of travelers on trips for today\'s date', () => {
