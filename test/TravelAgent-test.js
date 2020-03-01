@@ -75,8 +75,8 @@ describe('TravelAgent', () => {
     expect(travelAgent.calculateIncomeForYear()).to.equal(8832);
   });
 
-  it.skip('should be able to see the number of travelers on trips for today\'s date', () => {
-    expect(travelAgent.getDailyNumberOfTravelers("2020/03/01")).to.equal(0);
-    expect(travelAgent.getDailyNumberOfTravelers("2021/01/09")).to.equal(3);
+  it('should be able to see the number of travelers on trips for today\'s date', () => {
+    //checking against today's date 3/1/2020
+    expect(travelAgent.getDailyNumberOfTravelers()).to.equal(0);
   })
 });
