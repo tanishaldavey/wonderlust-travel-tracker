@@ -66,7 +66,7 @@ let allTrips = () => {
 let allTravelers = () => {
   return allData.travelers.map(travelersData => {
     traveler = new Traveler(travelersData, allData.trips)
-    console.log(traveler);
+    // console.log(traveler);
   });
 };
 
@@ -84,18 +84,19 @@ let allTravelers = () => {
 function signInTraveler() {
   let userInput = $('#user').val();
   let passwordInput = $('#password').val();
+  let userId = userInput.slice(8);
   if ((typeof parseInt(userInput[8])) === 'number' && passwordInput === 'travel2020') {
     //Display a new page
     console.log('Do the thing');
     createHeaderForTravelerDashboard()
-    createTravlerDashboard()
-
+    createTravelerDashboard()
+    return userId;
   } else {
     alert('Your username or passowrd is not correct.')
   }
 }
 
-function createTravlerDashboard() {
+function createTravelerDashboard() {
   $('main').html(`<section class="traveler-dashboard">
       <p id="yearly-total-spent-on-trips">You've spent $total this year on trips</p>
     </section>
