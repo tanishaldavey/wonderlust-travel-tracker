@@ -23,7 +23,7 @@ body {
 
 // STYLING FOR HEADER
 header {
-  border: 2px solid red;
+  background: #f0efe2;
   display: flex;
   font-size: 1.5em;
   justify-content: space-between;
@@ -31,21 +31,26 @@ header {
 }
 
 #logo {
-  border-left: 4px solid orange;
-  border-top: 4px solid orange;
-  color: orange;
+  // border-left: 4px solid #ff9369;
+  // border-top: 4px solid #ff9369;
+  color: #7b8a56;
   font-size: 2em;
   margin-top: .5%;
   padding: .5% 0 0 .5%;
   text-decoration: none;
+  text-shadow: 1px 1px 1px #000,
+               1px 1px 2.5px #000;
 }
 
 header section {
-  border: 2px solid blue;
   display: flex;
   justify-content: space-between;
-  padding: 1% 0;
-  width: 10%;
+  padding: 1.5% 0;
+  width: 15%;
+}
+
+header p {
+  color: #3d452b;
 }
 //
 // #sign-in {
@@ -61,27 +66,30 @@ header section {
 //   }
 // }
 //
-// //STYLING FOR LANDING PAGE MAIN
-// main {
-//   background: url('../images/jessica-f-973vRak-llM-unsplash.jpg') center center / 100vw auto no-repeat;
-//   height: 90vh;
-//   padding: 0 2em;
-//   position: relative;
-//   z-index: 1;
-// }
-//
-// h1 {
-//   color: #fff;
-//   font-size: 15em;
-// }
-//
-// h2 {
-//   color: #e5e5e5;
-//   font-style: italic;
-//   font-size: 3em;
-//   margin-top: -3%;
-//   text-align: center;
-// }
+// STYLING FOR LANDING PAGE MAIN
+main {
+  background: url('../images/jessica-f-973vRak-llM-unsplash.jpg') center center / cover no-repeat;
+  height: 90vh;
+  padding: 0 2em;
+  position: relative;
+  z-index: 1;
+}
+
+h1 {
+  color: #f0efe2;
+  font-size: 15em;
+  text-align: center;
+  text-shadow: 1px 1px 1px #000,
+               3px 3px 5px #000;
+}
+
+h2 {
+  color: #f0efe2;
+  font-style: italic;
+  font-size: 2em;
+  margin-top: -3%;
+  text-align: center;
+}
 //
 // //STYLING FOR SIGN IN FORM
 // #sign-in-form {
