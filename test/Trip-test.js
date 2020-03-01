@@ -1,8 +1,9 @@
 import { expect } from 'chai';
 import spies from 'chai-spies';
-import Trip from '../src/trip.js';
+import Trip from '../src/Trip.js';
+import Destination from '../src/Destination.js'
 
-let tripData, trip1, trip2;
+let tripData, destinationData, trip1, trip2;
 
 beforeEach(() => {
   tripData = [{
@@ -89,7 +90,10 @@ describe('Trip', () => {
   });
 
   it('should be able to calculate the cost of a trip', () => {
-    expect(trip1.calculateCostOfTrip()).to.equal()
-    expect(trip2.calculateCostOfTrip()).to.equal()
+    trip1.calculateCostOfTrip();
+    trip2.calculateCostOfTrip();
+
+    expect(trip1.calculateCostOfTrip()).to.equal(8720);
+    expect(trip2.calculateCostOfTrip()).to.equal(3060);
   })
 });
