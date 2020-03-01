@@ -29,7 +29,6 @@ const tripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/191
   .then(data => data.trips)
 
 let signInButton = $('#sign-in-submit');
-let landingPageHome = $('main');
 let allData, destination, trip, traveler;
 
 signInButton.on('click', signInTraveler);
@@ -60,14 +59,14 @@ let allDestinations = () => {
 let allTrips = () => {
   return allData.trips.map(tripData => {
     trip = new Trip(tripData, allData.destinations)
-    console.log(trip);
+    // console.log(trip);
   });
 };
 
 let allTravelers = () => {
   return allData.travelers.map(travelersData => {
     traveler = new Traveler(travelersData, allData.trips)
-    // console.log(traveler);
+    console.log(traveler);
   });
 };
 
@@ -85,7 +84,7 @@ let allTravelers = () => {
 function signInTraveler() {
   let userInput = $('#user').val();
   let passwordInput = $('#password').val();
-  if((typeof parseInt(userInput[8])) === 'number' && passwordInput === 'travel2020') {
+  if ((typeof parseInt(userInput[8])) === 'number' && passwordInput === 'travel2020') {
     //Display a new page
     console.log('Do the thing');
     createHeaderForTravelerDashboard()

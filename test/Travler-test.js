@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import spies from 'chai-spies';
 import Traveler from '../src/Traveler.js';
-import Trip from '../src/Trip.js'
 
 let tripsData, travelerData, traveler1, traveler2, traveler3;
 
@@ -132,8 +131,8 @@ describe('Traveler', () => {
     traveler2.getTotalCostOfTrip();
     traveler3.getTotalCostOfTrip();
 
-    expect(traveler1.getTotalCostOfTrip()).to.equal(6435)
-    expect(traveler2.getTotalCostOfTrip()).to.equal(191472)
-    expect(traveler3.getTotalCostOfTrip()).to.equal(18425)
+    expect(traveler1.getTotalCostOfTrip()).to.equal(6435);
+    expect(traveler2.getTotalCostOfTrip()).to.equal(191472);
+    expect(traveler3.getTotalCostOfTrip()).to.equal(18425);
   });
 });

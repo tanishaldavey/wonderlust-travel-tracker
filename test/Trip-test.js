@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import spies from 'chai-spies';
 import Trip from '../src/Trip.js';
-import Destination from '../src/Destination.js'
 
 let tripData, destinationData, trip1, trip2;
 
