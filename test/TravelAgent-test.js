@@ -2,6 +2,8 @@ import { expect } from 'chai';
 import spies from 'chai-spies';
 import TravelAgent from '../src/TravelAgent.js';
 
+let tripsData, travelAgent;
+
 beforeEach(()=> {
   tripsData = [{
     "id": 117,
@@ -57,8 +59,24 @@ beforeEach(()=> {
     "duration": 18,
     "status": "pending"
   }];
+  travelAgent = new TravelAgent(tripsData)
 });
 
 describe('TravelAgent', () => {
+  it('should be an instance of a TravelAgent', () => {
+    expect(travelAgent).to.be.instanceOf(TravelAgent);
+  });
 
+  it('should be able to see new trip requests (pending trip requests)', () => {
+    expect(travelAgent.listNewTripRequest()).to.deep.equal([tripsData[5]]);
+  });
+
+  it.skip('should be able to calculate total income generated this year (10% of user trip costs)', () => {
+    expect(travelAgent.calculateIncomeForYear()).to.equal();
+  });
+
+  it.skip('should be able to see the number of travelers on trips for today\'s date', () => {
+    expect(travelAgent.getDailyNumberOfTravelers("2020/03/01")).to.equal(0);
+    expect(travelAgent.getDailyNumberOfTravelers("2021/01/09")).to.equal(3);
+  })
 });
