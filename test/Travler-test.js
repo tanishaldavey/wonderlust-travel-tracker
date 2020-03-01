@@ -126,4 +126,14 @@ describe('Traveler', () => {
     expect(traveler2.upcomingTrips).to.deep.equal([tripsData[1], tripsData[2], tripsData[4]]);
     expect(traveler3.upcomingTrips).to.deep.equal([]);
   });
+
+  it('should be able to get the total cost of an approved trip, including travel agenet\'s 10% fee', () => {
+    traveler1.getTotalCostOfTrip();
+    traveler2.getTotalCostOfTrip();
+    traveler1.getTotalCostOfTrip();
+
+    expect(traveler1.getTotalCostOfTrip()).to.equal()
+    expect(traveler2.getTotalCostOfTrip()).to.equal()
+    expect(traveler3.getTotalCostOfTrip()).to.equal()
+  });
 });
