@@ -18,8 +18,6 @@ class Trip {
 
   calculateCostOfTrip() {
     let destination = this.findTripDestination();
-    console.log(destination.estimatedLodgingCostPerDay);
-    console.log(destination.estimatedFlightCostPerPerson);
     let lodgingForEachPerson = destination.estimatedLodgingCostPerDay * this.travelers * this.duration;
     let costOFFlightPerson = destination.estimatedFlightCostPerPerson * this.travelers;
     return lodgingForEachPerson + costOFFlightPerson;

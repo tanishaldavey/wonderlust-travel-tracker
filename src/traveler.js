@@ -71,7 +71,6 @@ class Traveler {
     const allTrips = this.getAllTripsForUser();
     let today = moment();
     let tripDate;
-    let dateDifference;
     return allTrips.map(trip => {
       tripDate = moment(trip.date)
       return {
@@ -87,7 +86,7 @@ class Traveler {
     let pastTrip;
 
     return dateDifferences.reduce((pastTrips, trip) => {
-      if(trip.dateDifference > 0) {
+      if (trip.dateDifference > 0) {
         pastTrip = allTripsForUser.find(singleTrip => {
           return singleTrip.id === trip.tripID
         })
@@ -100,7 +99,7 @@ class Traveler {
   getPendingTrips() {
     let allTripsForUser = this.getAllTripsForUser();
     return allTripsForUser.reduce((pendingTrips, trip) => {
-      if(trip.status === 'pending') {
+      if (trip.status === 'pending') {
         this.pendingTrips.push(trip)
       }
       return this.pendingTrips;
@@ -110,10 +109,9 @@ class Traveler {
   getAllUpcomingTrips() {
     let dateDifferences = this.determineTripDateDifference();
     let allTripsForUser = this.getAllTripsForUser();
-    let pendingTrips = this.getPendingTrips();
     let upcomingTrip;
     return dateDifferences.reduce((upcomingTrips, trip) => {
-      if(trip.dateDifference < 0) {
+      if (trip.dateDifference < 0) {
         upcomingTrip = allTripsForUser.find(singleTrip => {
           return singleTrip.id === trip.tripID;
         })
@@ -135,14 +133,11 @@ class Traveler {
     this.getAllUpcomingTrips();
     let allApprovedTrips = this.pastTrips.concat(this.upcomingTrips);
     let updatedApprovedTrips = this.removeDuplicates(allApprovedTrips);
-    console.log(updatedApprovedTrips.length);
     let tripCost;
-
     return updatedApprovedTrips.reduce((totalCostOfAllTrips, trip) => {
       trip = new Trip(trip, destinationsData)
       tripCost = trip.calculateCostOfTrip() * 1.1;
       totalCostOfAllTrips += tripCost;
-      console.log(totalCostOfAllTrips);
       return Math.round(totalCostOfAllTrips);
     }, 0);
   }
