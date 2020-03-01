@@ -71,4 +71,9 @@ describe('Trip', () => {
       expect(trip2.status).to.equal("approved");
     });
   });
+
+  it('should be able to calculate the cost of a trip', () => {
+    expect(trip1.calculateCostOfTrip()).to.equal()
+    expect(trip2.calculateCostOfTrip()).to.equal()
+  })
 });
