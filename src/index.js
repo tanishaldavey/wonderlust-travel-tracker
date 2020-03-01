@@ -85,7 +85,24 @@ function signInTraveler() {
   if((typeof parseInt(userInput[8])) === 'number' && passwordInput === 'travel2020') {
     //Display a new page
     console.log('Do the thing');
+    createTravlerDashboard()
+
   } else {
     alert('Your username or passowrd is not correct.')
   }
+}
+
+function createTravlerDashboard() {
+  $('main').html(`<section class="traveler-dashboard">
+      <p>You've spent $total this year on trips</p>
+    </section>
+    <section class="display-trips">
+      <h3>Pending Trips</h3>
+    </section>
+    <section class="display-trips">
+    <h3>Upcoming Trips</h3>
+    </section>
+    <section class="display-trips">
+    <h3>Past Trips</h3>
+    </section>`)
 }
