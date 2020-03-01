@@ -59,14 +59,15 @@ let allDestinations = () => {
 
 let allTrips = () => {
   return allData.trips.map(tripData => {
-    trip = new Trip(tripData)
+    trip = new Trip(tripData, allData.destinations)
+    console.log(trip);
   });
 };
 
 let allTravelers = () => {
   return allData.travelers.map(travelersData => {
     traveler = new Traveler(travelersData, allData.trips)
-    console.log(traveler);
+    // console.log(traveler);
   });
 };
 
