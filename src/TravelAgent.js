@@ -1,6 +1,12 @@
 class TravelAgent {
-  constructor() {
+  constructor(allTripsData) {
+    this.allTripsData = allTripsData;
+  }
 
+  listNewTripRequests() {
+    return this.allTripsData.filter(trip => {
+      return trip.status === 'pending';
+    })
   }
 }
 
