@@ -33,7 +33,7 @@ let landingPageHome = $('main');
 let allData, destination, trip, traveler;
 
 signInButton.on('click', signInTraveler);
-landingPageHome.on('click', fireEventsOnMain);
+// landingPageHome.on('click', fireEventsOnMain);
 
 
 $(document).ready(() => {
@@ -53,7 +53,7 @@ $(document).ready(() => {
 let allDestinations = () => {
   return allData.destinations.map(destinationData => {
      destination = new Destination(destinationData)
-     createDestinationCard(destination);
+     // createDestinationCard(destination);
   });
 };
 
@@ -65,7 +65,8 @@ let allTrips = () => {
 
 let allTravelers = () => {
   return allData.travelers.map(travelersData => {
-    traveler = new Traveler(travelersData)
+    traveler = new Traveler(travelersData, allData.trips)
+    console.log(traveler);
   });
 };
 
