@@ -10,6 +10,7 @@ import './css/styles.scss';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/w-icon.png'
+import './images/user.svg'
 
 import Destination from './Destination.js'
 import Trip from './Trip.js'
@@ -85,6 +86,7 @@ function signInTraveler() {
   if((typeof parseInt(userInput[8])) === 'number' && passwordInput === 'travel2020') {
     //Display a new page
     console.log('Do the thing');
+    createHeaderForTravelerDashboard()
     createTravlerDashboard()
 
   } else {
@@ -94,7 +96,7 @@ function signInTraveler() {
 
 function createTravlerDashboard() {
   $('main').html(`<section class="traveler-dashboard">
-      <p>You've spent $total this year on trips</p>
+      <p id="yearly-total-spent-on-trips">You've spent $total this year on trips</p>
     </section>
     <section class="display-trips">
       <h3>Pending Trips</h3>
@@ -105,4 +107,14 @@ function createTravlerDashboard() {
     <section class="display-trips">
     <h3>Past Trips</h3>
     </section>`)
+    $('.traveler-dashboard #yearly-total-spent-on-trips').css('text-align', 'right');
+}
+
+function createHeaderForTravelerDashboard() {
+  $('header section').css('width', '30%')
+  $('header section').css('justify-content', 'flex-end')
+  $('header section').html(`<img src="./images/user.svg" alt="profile icon">
+    <p>Welcome User</p>`)
+  $('header section p').css('margin-left', '-5%')
+
 }
