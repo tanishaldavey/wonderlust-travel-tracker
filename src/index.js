@@ -10,6 +10,7 @@ import './css/styles.scss';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/w-icon.png'
+import './images/user.svg'
 
 import Destination from './Destination.js'
 import Trip from './Trip.js'
@@ -27,11 +28,11 @@ const tripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/191
   .then(response => response.json())
   .then(data => data.trips)
 
-let signInButton = $('#sign-in');
+let signInButton = $('#sign-in-submit');
 let landingPageHome = $('main');
 let allData, destination, trip, traveler;
 
-signInButton.on('click', displaySignInForm);
+signInButton.on('click', signInTraveler);
 landingPageHome.on('click', fireEventsOnMain);
 
 
@@ -78,39 +79,42 @@ let allTravelers = () => {
 // };
 
 //DOMUpdates.js file
-function displaySignInForm() {
-//there's already a from, don't add another
 
-  $('#home').append(`<section id="sign-in-form">
-    <form>
-    <label for="user">
-      <input id="user" type="text" placeholder="username" required>
-    </label>
-    <label for="password">
-      <input id="password" type="password" placeholder="Password" required>
-    </label>
-    <button id="sign-in-submit" type='button'>Sign In</button>
-    </form>
-    <p>Admin click <a href="">here</a> to sign in.
-  </section>`)
+function signInTraveler() {
+  let userInput = $('#user').val();
+  let passwordInput = $('#password').val();
+  if((typeof parseInt(userInput[8])) === 'number' && passwordInput === 'travel2020') {
+    //Display a new page
+    console.log('Do the thing');
+    createHeaderForTravelerDashboard()
+    createTravlerDashboard()
+
+  } else {
+    alert('Your username or passowrd is not correct.')
+  }
 }
 
-// function signInUser() {
-//   let userInput = $('#user').val();
-//   let passwordInput = $('#password').val();
-//   if(passwordInput === `customer${userInput}`) {
-//     //Display a new page
-//     console.log('Do the thing');
-//   } else {
-//     alert('Your username or passowrd is not correct.')
-//   }
-// }
-//
-// function fireEventsOnMain(event) {
-//   event.preventDefault();
-//   if (event.target.id === 'sign-in-submit') {
-//     signInUser();
-//   } else if (event.target.parentElement !== 'form') {
-//     $('#sign-in-form').remove();
-//   }
-// }
+function createTravlerDashboard() {
+  $('main').html(`<section class="traveler-dashboard">
+      <p id="yearly-total-spent-on-trips">You've spent $total this year on trips</p>
+    </section>
+    <section class="display-trips">
+      <h3>Pending Trips</h3>
+    </section>
+    <section class="display-trips">
+    <h3>Upcoming Trips</h3>
+    </section>
+    <section class="display-trips">
+    <h3>Past Trips</h3>
+    </section>`)
+    $('.traveler-dashboard #yearly-total-spent-on-trips').css('text-align', 'right');
+}
+
+function createHeaderForTravelerDashboard() {
+  $('header section').css('width', '30%')
+  $('header section').css('justify-content', 'flex-end')
+  $('header section').html(`<img src="./images/user.svg" alt="profile icon">
+    <p>Welcome User</p>`)
+  $('header section p').css('margin-left', '-5%')
+
+}
