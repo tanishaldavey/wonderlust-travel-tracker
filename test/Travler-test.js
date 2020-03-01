@@ -60,21 +60,21 @@ beforeEach(() => {
     "duration": 18,
     "status": "pending"
   }];
-      travelerData = [{
+  travelerData = [{
       "id": 1,
       "name": "Ham Leadbeater",
       "travelerType": "relaxer"
-    },
-    {
+  },
+  {
     "id": 29,
     "name": "Oliviero Tunuy",
     "travelerType": "shopper"
-    },
-    {
+  },
+  {
     "id": 35,
     "name": "Lorilyn Frostdick",
     "travelerType": "shopper"
-    }];
+  }];
   traveler1 = new Traveler(travelerData[0], tripsData);
   traveler2 = new Traveler(travelerData[1], tripsData);
   traveler3 = new Traveler(travelerData[2], tripsData);
@@ -130,10 +130,10 @@ describe('Traveler', () => {
   it('should be able to get the total cost of an approved trip, including travel agenet\'s 10% fee', () => {
     traveler1.getTotalCostOfTrip();
     traveler2.getTotalCostOfTrip();
-    traveler1.getTotalCostOfTrip();
+    traveler3.getTotalCostOfTrip();
 
-    expect(traveler1.getTotalCostOfTrip()).to.equal()
-    expect(traveler2.getTotalCostOfTrip()).to.equal()
-    expect(traveler3.getTotalCostOfTrip()).to.equal()
+    expect(traveler1.getTotalCostOfTrip()).to.equal(6435)
+    expect(traveler2.getTotalCostOfTrip()).to.equal(191472)
+    expect(traveler3.getTotalCostOfTrip()).to.equal(18425)
   });
 });
