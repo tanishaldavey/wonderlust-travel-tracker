@@ -6,16 +6,28 @@
   </head>
   <body>
     <header>
-      <img src="./images/w-icon.png" alt="letter w as an icon">
+      <a id="logo" href="home"><p>W</p></a>
       <section>
         <p>Destinations</p>
         <p>About</p>
-        <button id="sign-in" type="button" name="sign-in">Sign In</button>
       </section>
     </header>
     <main id="home">
       <h1>Wonderlust</h1>
-      <h2>Where will you wonder to next?</h2>
+      <section id="sign-in-form">
+        <h2>Sign in to book your next trip</h2>
+        <form>
+        <label for="user">
+          <input id="user" type="text" placeholder="username" required>
+        </label>
+        <label for="password">
+          <input id="password" type="password" placeholder="password" required>
+        </label>
+        <button id="sign-in-submit" type='button'>Sign In</button>
+        </form>
+        <p>Admin click <a href="" aria-label="admin sign in">here</a> to sign in.
+      </section>
+      <h3>Where will you wonder to next?</h3>
     </main>
     <section class="destination-cards">
       <!-- This section will be populated on page load -->
