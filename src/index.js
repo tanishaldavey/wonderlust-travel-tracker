@@ -69,13 +69,13 @@ let allTravelers = () => {
 };
 
 //should probably be moved to a DOMupdates.js file
-let createDestinationCard = (destination) => {
-  $('.destination-cards').append(`<div>
-    <p>${destination.name}</p>
-    <img src=${destination.image} alt=${destination.alt}>
-    <p>${destination.estimatedLodgingCostPerDay}</p>
-    <p>${destination.estimatedFlightCostPerPerson}</p>`)
-};
+// let createDestinationCard = (destination) => {
+//   $('.destination-cards').append(`<div>
+//     <p>${destination.name}</p>
+//     <img src=${destination.image} alt=${destination.alt}>
+//     <p>${destination.estimatedLodgingCostPerDay}</p>
+//     <p>${destination.estimatedFlightCostPerPerson}</p>`)
+// };
 
 //DOMUpdates.js file
 function displaySignInForm() {
@@ -95,22 +95,22 @@ function displaySignInForm() {
   </section>`)
 }
 
-function signInUser() {
-  let userInput = $('#user').val();
-  let passwordInput = $('#password').val();
-  if(passwordInput === `customer${userInput}`) {
-    //Display a new page
-    console.log('Do the thing');
-  } else {
-    alert('Your username or passowrd is not correct.')
-  }
-}
-
-function fireEventsOnMain(event) {
-  event.preventDefault();
-  if (event.target.id === 'sign-in-submit') {
-    signInUser();
-  } else if (event.target.parentElement !== 'form') {
-    $('#sign-in-form').remove();
-  }
-}
+// function signInUser() {
+//   let userInput = $('#user').val();
+//   let passwordInput = $('#password').val();
+//   if(passwordInput === `customer${userInput}`) {
+//     //Display a new page
+//     console.log('Do the thing');
+//   } else {
+//     alert('Your username or passowrd is not correct.')
+//   }
+// }
+//
+// function fireEventsOnMain(event) {
+//   event.preventDefault();
+//   if (event.target.id === 'sign-in-submit') {
+//     signInUser();
+//   } else if (event.target.parentElement !== 'form') {
+//     $('#sign-in-form').remove();
+//   }
+// }
