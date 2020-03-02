@@ -1,39 +1,41 @@
-// This is the JavaScript entry file - your code begins here
-// Do not delete or rename this file ********
-
-// An example of how you import jQuery into a JS file if you use jQuery in that file
 import $ from 'jquery';
-
-// An example of how you tell webpack to use a CSS (SCSS) file
+//STYLESHEETS
 import './css/base.scss';
 import './css/styles.scss';
-
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
-import './images/w-icon.png'
-import './images/user.svg'
-
+//CLASSES
 import Destination from './Destination.js'
 import Trip from './Trip.js'
 import Traveler from './Traveler.js'
+import TravelAgent from './TravelAgent.js'
+//IMAGES USED IN THE INDEX
+import './images/w-icon.png'
+import './images/user.svg'
+//DOMUPDATES
+import domUpdates from './domUpdates.js'
+
 
 const travlersData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/travelers/travelers')
   .then(response => response.json())
   .then(data => data.travelers)
+  .catch(error => console.log(error))
 
 const destinationsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/destinations/destinations')
   .then(response => response.json())
   .then(data => data.destinations)
+  .catch(error => console.log(error))
 
 const tripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/trips/trips')
   .then(response => response.json())
   .then(data => data.trips)
+  .catch(error => console.log(error))
 
-let signInButton = $('#sign-in-submit');
-let adminLogIn = $('#admin-log-in');
+const signInButton = $('#sign-in-submit');
+const adminLogIn = $('#admin-log-in');
 let allData, destination, trip, traveler;
 
 signInButton.on('click', signInTraveler);
-adminLogIn.on('click', displayAdminLogInScreen);
+adminLogIn.on('click', domUpdates.displayAdminLogInScreen);
+adminLogIn.on('click', domUpdates.createAdminSignInButton);
 
 $(document).ready(() => {
   Promise.all([travlersData, destinationsData, tripsData])
@@ -52,14 +54,12 @@ $(document).ready(() => {
 let allDestinations = () => {
   return allData.destinations.map(destinationData => {
      return destination = new Destination(destinationData)
-     // createDestinationCard(destination);
   });
 };
 
 let allTrips = () => {
   return allData.trips.map(tripData => {
     return trip = new Trip(tripData, allData.destinations)
-    // console.log(trip);
   });
 };
 
@@ -78,7 +78,6 @@ let updateTravelerProperties = () => {
     updatePendingTripProperties(traveler)
     traveler.getApprovedUpcomingTrips();
     updateUpcomingTripProperties(traveler);
-    // traveler.getTotalCostOfTrip(); //This is breaking EVERYTHING!!!
     updatedTravelers.push(traveler)
   });
   return updatedTravelers;
@@ -114,6 +113,37 @@ let updateUpcomingTripProperties = (user) => {
   return user.upcomingTrips = updatedUpcomingTrips;
 }
 
+function signInTraveler() {
+  let userInput = $('#user').val();
+  let passwordInput = $('#password').val();
+  let userId = userInput.slice(8);
+  let travelers = updateTravelerProperties();
+  let currentTraveler;
+  if ((typeof parseInt(userInput[8])) === 'number' && passwordInput === 'travel2020') {
+    currentTraveler = travelers[userId - 1];
+    domUpdates.createHeaderForTravelerDashboard(currentTraveler)
+    domUpdates.createTravelerDashboard(currentTraveler)
+    domUpdates.insertPastTrips(currentTraveler);
+    domUpdates.insertUpcomingTrips(currentTraveler);
+    domUpdates.insertPendingTrips(currentTraveler);
+  } else {
+    alert('Your username or passowrd is not correct.')
+  }
+}
+
+//need to change functionality so that a
+
+function signInAdmin() {
+    if ($('#user').val() === 'agency' && $('#password').val() === 'travel2020') {
+      let agent = new TravelAgent(allData.trips);
+      console.log("hellooooo");
+      domUpdates.createAgentDashboard(agent);
+      domUpdates.createHeaderForAgentDashboard(agent);
+    } else {
+      alert('Your username or passowrd is not correct.');
+    }
+  }
+
 //should probably be moved to a DOMupdates.js file
 // let createDestinationCard = (destination) => {
 //   $('.destination-cards').append(`<div>
@@ -125,134 +155,4 @@ let updateUpcomingTripProperties = (user) => {
 
 //DOMUpdates.js file
 
-function signInTraveler() {
-  let userInput = $('#user').val();
-  let passwordInput = $('#password').val();
-  let userId = userInput.slice(8);
-  let travelers = updateTravelerProperties();
-  let currentTraveler;
-  if ((typeof parseInt(userInput[8])) === 'number' && passwordInput === 'travel2020') {
-    currentTraveler = travelers[userId - 1];
-    createHeaderForTravelerDashboard(currentTraveler)
-    createTravelerDashboard(currentTraveler)
-    insertPastTrips(currentTraveler);
-    insertUpcomingTrips(currentTraveler);
-    insertPendingTrips(currentTraveler);
-  } else {
-    alert('Your username or passowrd is not correct.')
-  }
-}
-
-function createTravelerDashboard(traveler) {
-  $('main').html(`<section class="traveler-dashboard">
-      <p>$total spent this year on trips</p>
-      <button>Book New Trip<button>
-    </section>
-    <section class="display-trips pending-trips">
-      <h3>Pending Trips</h3>
-      <section class="trip-info">
-      </section>
-    </section>
-    <section class="display-trips upcoming-trips">
-    <h3>Upcoming Trips</h3>
-      <section class="trip-info">
-      </section>
-    </section>
-    <section class="display-trips past-trips">
-    <h3>Past Trips</h3>
-      <section class="trip-info">
-      </section>
-    </section>`)
-    $('.traveler-dashboard #yearly-total-spent-on-trips').css('text-align', 'right');
-    $('main').css('height', '100vh');
-}
-
-function createHeaderForTravelerDashboard(traveler) {
-  $('header section').css('width', '30%')
-  $('header section').css('justify-content', 'flex-end')
-  $('header section').html(`<img src="./images/user.svg" alt="profile icon">
-    <p>${traveler.name}</p>`)
-  $('header section p').css('margin-left', '-5%')
-}
-
-function insertPastTrips(traveler) {
-  if (traveler.pastTrips.length !== 0) {
-    traveler.pastTrips.forEach(trip => {
-      $('.past-trips .trip-info').append(`<div>
-          <p>${trip.tripDestinationName}</p>
-          <p>${trip.date}</p>
-        </div>`)
-    });
-  } else {
-    $('.past-trips').append(`<p>You don't have any past trips.</p>`).css('text-align', 'center');
-  }
-}
-function insertUpcomingTrips(traveler) {
-  if (traveler.upcomingTrips.length !== 0) {
-    traveler.upcomingTrips.forEach(trip => {
-      $('.upcoming-trips .trip-info').append(`<div>
-          <p>${trip.tripDestinationName}</p>
-          <p>${trip.date}</p>
-        </div>`)
-    });
-  } else {
-    $('.upcoming-trips').append(`<p>You don't have any upcoming trips.</p>`).css('text-align', 'center');
-  }
-}
-function insertPendingTrips(traveler) {
-  if (traveler.pendingTrips.length !== 0) {
-    traveler.pendingTrips.forEach(trip => {
-      $('.pending-trips .trip-info').append(`<div>
-          <p>${trip.tripDestinationName}</p>
-          <p>${trip.date}</p>
-        </div>`)
-    });
-  } else {
-    $('.pending-trips').append(`<p>You don't have any pending trips.</p>`).css('text-align', 'center');
-  }
-}
-
-function displayAdminLogInScreen(event) {
-  event.preventDefault();
-  $('h1').text('Wonderland Admin Login Page')
-  $('#user').attr('placeholder', 'admin username')
-  $('main h3').remove();
-  $('#sign-in-form h2').remove();
-  $('#sign-in-form p').remove();
-  $('#sign-in-form button').remove();
-  $('#sign-in-form').append(`<button id="admin-sign-in" type='button'>Sign In</button>`)
-  $('main').css('background', '#7b8a56')
-  $('h1').css('font-size', '4em');
-  $('#sign-in-form').css('background', '#cad0bb');
-  $('#sign-in-form').css('margin-top', '5%');
-  $('sign-in-form').css('height', '30%');
-  $('#admin-sign-in').on('click', signInAdmin);
-}
-
-function createAgent() {
-  let agent = new TravelAgent(allData.trips);
-  agent.calculateIncomeForEachTrip();
-}
-
-function signInAdmin() {
-  if ($('#user').val() === 'agency' && $('#password').val() === 'travel2020') {
-    let agent = new TravelAgent(allData.trips);
-    createAgentDashboard(agent);
-    createHeaderForAgentDashboard(agent);
-  } else {
-    alert('Your username or passowrd is not correct.');
-  }
-}
-
-function createAgentDashboard(admin) {
-  $('main').html(`<section>
-    <h3>New Trip Requests</h3>
-    <h3>Total Income Generated This Year:</h3>
-    <h3>Travelers on Trips Today:</h3>
-    </section>`)
-}
-
-function createHeaderForAgentDashboard(admin) {
-  $('header section').html(`<img src="./images/user.svg" alt="profile icon">
-    <p>Admin</p>`);
-}
+export default signInAdmin;
