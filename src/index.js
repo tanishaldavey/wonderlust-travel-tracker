@@ -156,7 +156,7 @@ function createDestinationCard() {
 function displayBookingForm() {
   let destinationID = event.target.parentElement.id;
   let destination = allDestinations()[destinationID - 1];
-  $('main').html(`<section>
+  $('main').html(`<section id=${destination.id}>
       <form id="booking-trip-form">
       <p>Book a trip to <span>${destination.name}</span><p>
       <label for="date">Date
@@ -175,18 +175,41 @@ function displayBookingForm() {
     $('main').css('height', '90vh');
     $('main').append(`<section class="display-trip-cost"></section>`)
     $('#cancel-booking').on('click', domUpdates.displayBookingPage);
-    $('input[id="duration"], input[id="travelers"]').on('input', updateTotalCost);
+    $('input[id="duration"], input[id="travelers"], input[id="date"]').on('input', updateTotalCost);
+    $('#submit-trip-btn').on('click', submitTripRequest)
 }
 
 function updateTotalCost() {
+  //fix calculation on this
   let duration = $('#duration').val();
   let travelers = $('#travelers').val();
+  console.log($('#date').val());
 
-  $('.display-trip-cost').html(`<p>Total Cost of Lodging For This Trip: ${travelers * duration * 500}</p>
-    <p>Total Cost of Flights For This Trip: ${travelers * 500}</p>
-    <p>Travel Agent's 10% Fee: ${((travelers *
-      duration * 500) + (duration * 500)) * .1}</p>
+  $('.display-trip-cost').html(`<p>Total Cost of Lodging For This Trip: $${travelers * duration * 500}.00</p>
+    <p>Total Cost of Flights For This Trip: $${travelers * 500}.00</p>
+    <p>Travel Agent's 10% Fee: $${((duration * travelers * 500) + (travelers * 500)) * .1}.00</p>
     <p>Total Cost of this Trip:<p>`)
 }
+
+function submitTripRequest() {
+  let destinationID = event.target.parentElement.parentElement.parentElement.id;
+  let userID = event.target.parentElement.parentElement.parentElement.parentElement.id;
+  let tripData = {
+     "id": generateRandomID(),
+     "userID": userID,
+     "destinationID": destinationID,
+     "travelers": $('#travelers').val(),
+     "date": $('#date').val().split('-').join('/'),
+     "duration": $('#duration').val(),
+     "status": "pending",
+     "suggestedActivities": []
+   };
+  return tripData
+}
+
+let generateRandomID = () => {
+  return Math.random().toString(36).substr(2, 9);
+}
+
 
 export { signInAdmin, createDestinationCard }
