@@ -92,7 +92,8 @@ h3 {
 }
 
 //STYLING FOR SIGN IN FORM
-#sign-in-form {
+#sign-in-form,
+#booking-trip-form {
   background:  #f0efe2;
   border-radius: 4px;
   height: 38%;
@@ -187,4 +188,13 @@ form input {
   height: auto;
   max-height: 60%;
   width: 95%;
+}
+
+//SUBMIT TRIP FORM
+#booking-trip-form {
+  margin-top: 5%;
+}
+
+span {
+  font-weight: bold;
 }

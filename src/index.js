@@ -173,7 +173,20 @@ function displayBookingForm() {
       </form>
       </section>`)
     $('main').css('height', '90vh');
+    $('main').append(`<section class="display-trip-cost"></section>`)
     $('#cancel-booking').on('click', domUpdates.displayBookingPage);
+    $('input[id="duration"], input[id="travelers"]').on('input', updateTotalCost);
+}
+
+function updateTotalCost() {
+  let duration = $('#duration').val();
+  let travelers = $('#travelers').val();
+
+  $('.display-trip-cost').html(`<p>Total Cost of Lodging For This Trip: ${travelers * duration * 500}</p>
+    <p>Total Cost of Flights For This Trip: ${travelers * 500}</p>
+    <p>Travel Agent's 10% Fee: ${((travelers *
+      duration * 500) + (duration * 500)) * .1}</p>
+    <p>Total Cost of this Trip:<p>`)
 }
 
 export { signInAdmin, createDestinationCard }
