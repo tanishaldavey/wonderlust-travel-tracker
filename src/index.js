@@ -155,10 +155,10 @@ function createDestinationCard() {
 
 function displayBookingForm() {
   let destinationID = event.target.parentElement.id;
-  console.log(destinationID);
+  let destination = allDestinations()[destinationID - 1];
   $('main').html(`<section>
-      <form>
-      <h3>Book a trip to</h3>
+      <form id="booking-trip-form">
+      <p>Book a trip to <span>${destination.name}</span><p>
       <label for="date">Date
         <input id="date" type="date">
       </label>
@@ -168,11 +168,12 @@ function displayBookingForm() {
       <label for="travelers">Number of Travelers
         <input id="travelers" type="number">
       </label>
-      </form>
       <button id="submit-trip-btn" type="button">Submit Trip</button>
       <button id="cancel-booking" type="button">Cancel</button>
+      </form>
       </section>`)
     $('main').css('height', '90vh');
+    $('#cancel-booking').on('click', domUpdates.displayBookingPage);
 }
 
 export { signInAdmin, createDestinationCard }
