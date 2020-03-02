@@ -8,6 +8,7 @@ class Trip {
     this.duration = tripData.duration;
     this.status = tripData.status;
     this.destinationData = destinationData;
+    this.tripDestinationName = null;
   }
 
   findTripDestination() {
@@ -21,6 +22,10 @@ class Trip {
     let lodgingForEachPerson = destination.estimatedLodgingCostPerDay * this.travelers * this.duration;
     let costOFFlightPerson = destination.estimatedFlightCostPerPerson * this.travelers;
     return lodgingForEachPerson + costOFFlightPerson;
+  }
+
+  getDestinationName() {
+    return this.tripDestinationName = this.findTripDestination().destination;
   }
 }
 

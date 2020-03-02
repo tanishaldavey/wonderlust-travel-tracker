@@ -32,8 +32,6 @@ let signInButton = $('#sign-in-submit');
 let allData, destination, trip, traveler;
 
 signInButton.on('click', signInTraveler);
-// landingPageHome.on('click', fireEventsOnMain);
-
 
 $(document).ready(() => {
   Promise.all([travlersData, destinationsData, tripsData])
@@ -51,24 +49,68 @@ $(document).ready(() => {
 
 let allDestinations = () => {
   return allData.destinations.map(destinationData => {
-     destination = new Destination(destinationData)
+     return destination = new Destination(destinationData)
      // createDestinationCard(destination);
   });
 };
 
 let allTrips = () => {
   return allData.trips.map(tripData => {
-    trip = new Trip(tripData, allData.destinations)
+    return trip = new Trip(tripData, allData.destinations)
     // console.log(trip);
   });
 };
 
 let allTravelers = () => {
   return allData.travelers.map(travelersData => {
-    traveler = new Traveler(travelersData, allData.trips)
-    console.log(traveler);
+    return traveler = new Traveler(travelersData, allData.trips)
   });
 };
+
+let updateTravelerProperties = () => {
+  let updatedTravelers = [];
+  allTravelers().forEach(traveler => {
+    traveler.getPastTrips();
+    updatePastTripProperties(traveler);
+    traveler.getPendingTrips();
+    updatePendingTripProperties(traveler)
+    traveler.getApprovedUpcomingTrips();
+    updateUpcomingTripProperties(traveler);
+    // traveler.getTotalCostOfTrip(); //This is breaking EVERYTHING!!!
+    updatedTravelers.push(traveler)
+  });
+  return updatedTravelers;
+}
+
+let updatePastTripProperties = (user) => {
+  let updatedPastTrips = [];
+  user.pastTrips.forEach(trip => {
+    trip = new Trip(trip, allData.destinations);
+    trip.getDestinationName()
+    updatedPastTrips.push(trip)
+  })
+  return user.pastTrips = updatedPastTrips;
+}
+
+let updatePendingTripProperties = (user) => {
+  let updatedPendingTrips = [];
+  user.pendingTrips.forEach(trip => {
+    trip = new Trip(trip, allData.destinations);
+    trip.getDestinationName()
+    updatedPendingTrips.push(trip);
+  })
+  return user.pendingTrips = updatedPendingTrips;
+}
+
+let updateUpcomingTripProperties = (user) => {
+  let updatedUpcomingTrips = [];
+  user.upcomingTrips.forEach(trip => {
+    trip = new Trip(trip, allData.destinations);
+    trip.getDestinationName()
+    updatedUpcomingTrips.push(trip);
+  })
+  return user.upcomingTrips = updatedUpcomingTrips;
+}
 
 //should probably be moved to a DOMupdates.js file
 // let createDestinationCard = (destination) => {
@@ -84,38 +126,84 @@ let allTravelers = () => {
 function signInTraveler() {
   let userInput = $('#user').val();
   let passwordInput = $('#password').val();
+  let userId = userInput.slice(8);
+  let travelers = updateTravelerProperties();
+  let currentTraveler;
   if ((typeof parseInt(userInput[8])) === 'number' && passwordInput === 'travel2020') {
-    //Display a new page
-    console.log('Do the thing');
-    createHeaderForTravelerDashboard()
-    createTravlerDashboard()
-
+    currentTraveler = travelers[userId - 1];
+    createHeaderForTravelerDashboard(currentTraveler)
+    createTravelerDashboard(currentTraveler)
+    insertPastTrips(currentTraveler);
+    insertUpcomingTrips(currentTraveler);
+    insertPendingTrips(currentTraveler);
   } else {
     alert('Your username or passowrd is not correct.')
   }
 }
 
-function createTravlerDashboard() {
+function createTravelerDashboard(traveler) {
   $('main').html(`<section class="traveler-dashboard">
-      <p id="yearly-total-spent-on-trips">You've spent $total this year on trips</p>
+      <p>$total spent this year on trips</p>
     </section>
-    <section class="display-trips">
+    <section class="display-trips pending-trips">
       <h3>Pending Trips</h3>
+      <section class="trip-info">
+      </section>
     </section>
-    <section class="display-trips">
+    <section class="display-trips upcoming-trips">
     <h3>Upcoming Trips</h3>
+      <section class="trip-info">
+      </section>
     </section>
-    <section class="display-trips">
+    <section class="display-trips past-trips">
     <h3>Past Trips</h3>
+      <section class="trip-info">
+      </section>
     </section>`)
     $('.traveler-dashboard #yearly-total-spent-on-trips').css('text-align', 'right');
 }
 
-function createHeaderForTravelerDashboard() {
+function createHeaderForTravelerDashboard(traveler) {
   $('header section').css('width', '30%')
   $('header section').css('justify-content', 'flex-end')
   $('header section').html(`<img src="./images/user.svg" alt="profile icon">
-    <p>Welcome User</p>`)
+    <p>${traveler.name}</p>`)
   $('header section p').css('margin-left', '-5%')
+}
 
+function insertPastTrips(traveler) {
+  if (traveler.pastTrips.length !== 0) {
+    traveler.pastTrips.forEach(trip => {
+      $('.past-trips .trip-info').append(`<div>
+          <p>${trip.tripDestinationName}</p>
+          <p>${trip.date}</p>
+        </div>`)
+    });
+  } else {
+    $('.past-trips').append(`<p>You don't have any past trips.</p>`).css('text-align', 'center');
+  }
+}
+function insertUpcomingTrips(traveler) {
+  if (traveler.upcomingTrips.length !== 0) {
+    traveler.upcomingTrips.forEach(trip => {
+      $('.upcoming-trips .trip-info').append(`<div>
+          <p>${trip.tripDestinationName}</p>
+          <p>${trip.date}</p>
+        </div>`)
+    });
+  } else {
+    $('.upcoming-trips').append(`<p>You don't have any upcoming trips.</p>`).css('text-align', 'center');
+  }
+}
+function insertPendingTrips(traveler) {
+  if (traveler.pendingTrips.length !== 0) {
+    traveler.pendingTrips.forEach(trip => {
+      $('.pending-trips .trip-info').append(`<div>
+          <p>${trip.tripDestinationName}</p>
+          <p>${trip.date}</p>
+        </div>`)
+    });
+  } else {
+    $('.pending-trips').append(`<p>You don't have any pending trips.</p>`).css('text-align', 'center');
+  }
 }

@@ -161,3 +161,10 @@ form input {
   color: #3d452b;
   margin: 0;
 }
+
+.trip-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  overflow: scroll;
+}
