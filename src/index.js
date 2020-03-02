@@ -143,16 +143,22 @@ function signInTraveler() {
 
 function createTravelerDashboard(traveler) {
   $('main').html(`<section class="traveler-dashboard">
-      <p>$total this year on trips</p>
+      <p>$total spent this year on trips</p>
     </section>
     <section class="display-trips pending-trips">
       <h3>Pending Trips</h3>
+      <section class="trip-info">
+      </section>
     </section>
     <section class="display-trips upcoming-trips">
     <h3>Upcoming Trips</h3>
+      <section class="trip-info">
+      </section>
     </section>
     <section class="display-trips past-trips">
     <h3>Past Trips</h3>
+      <section class="trip-info">
+      </section>
     </section>`)
     $('.traveler-dashboard #yearly-total-spent-on-trips').css('text-align', 'right');
 }
@@ -168,30 +174,36 @@ function createHeaderForTravelerDashboard(traveler) {
 function insertPastTrips(traveler) {
   if (traveler.pastTrips.length !== 0) {
     traveler.pastTrips.forEach(trip => {
-      $('.past-trips').append(`<p>${trip.tripDestinationName}</p>`)
-      $('.past-trips').append(`<p>${trip.date}</p>`)
+      $('.past-trips .trip-info').append(`<div>
+          <p>${trip.tripDestinationName}</p>
+          <p>${trip.date}</p>
+        </div>`)
     });
   } else {
-    $('.past-trips').append(`<p>You don't have any past trips.</p>`)
+    $('.past-trips').append(`<p>You don't have any past trips.</p>`).css('text-align', 'center');
   }
 }
 function insertUpcomingTrips(traveler) {
   if (traveler.upcomingTrips.length !== 0) {
     traveler.upcomingTrips.forEach(trip => {
-      $('.upcoming-trips').append(`<p>${trip.tripDestinationName}</p>`)
-      $('.upcoming-trips').append(`<p>${trip.date}</p>`)
+      $('.upcoming-trips .trip-info').append(`<div>
+          <p>${trip.tripDestinationName}</p>
+          <p>${trip.date}</p>
+        </div>`)
     });
   } else {
-    $('.upcoming-trips').append(`<p>You don't have any upcoming trips.</p>`)
+    $('.upcoming-trips').append(`<p>You don't have any upcoming trips.</p>`).css('text-align', 'center');
   }
 }
 function insertPendingTrips(traveler) {
   if (traveler.pendingTrips.length !== 0) {
     traveler.pendingTrips.forEach(trip => {
-      $('.pending-trips').append(`<p>${trip.tripDestinationName}</p>`)
-      $('.pending-trips').append(`<p>${trip.date}</p>`)
+      $('.pending-trips .trip-info').append(`<div>
+          <p>${trip.tripDestinationName}</p>
+          <p>${trip.date}</p>
+        </div>`)
     });
   } else {
-    $('.pending-trips').append(`<p>You don't have any pending trips.</p>`)
+    $('.pending-trips').append(`<p>You don't have any pending trips.</p>`).css('text-align', 'center');
   }
 }
