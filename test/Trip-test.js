@@ -94,5 +94,11 @@ describe('Trip', () => {
 
     expect(trip1.calculateCostOfTrip()).to.equal(8720);
     expect(trip2.calculateCostOfTrip()).to.equal(3060);
-  })
+  });
+
+  it('should be able to return the destination name associated with the trip', () => {
+    trip1.getDestinationName();
+    
+    expect(trip1.tripDestinationName).to.equal('Rome, Italy');
+  });
 });
