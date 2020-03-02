@@ -29,9 +29,11 @@ const tripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/191
   .then(data => data.trips)
 
 let signInButton = $('#sign-in-submit');
+let adminLogIn = $('#admin-log-in');
 let allData, destination, trip, traveler;
 
 signInButton.on('click', signInTraveler);
+adminLogIn.on('click', displayAdminLogInScreen);
 
 $(document).ready(() => {
   Promise.all([travlersData, destinationsData, tripsData])
@@ -144,6 +146,7 @@ function signInTraveler() {
 function createTravelerDashboard(traveler) {
   $('main').html(`<section class="traveler-dashboard">
       <p>$total spent this year on trips</p>
+      <button>Book New Trip<button>
     </section>
     <section class="display-trips pending-trips">
       <h3>Pending Trips</h3>
@@ -161,6 +164,7 @@ function createTravelerDashboard(traveler) {
       </section>
     </section>`)
     $('.traveler-dashboard #yearly-total-spent-on-trips').css('text-align', 'right');
+    $('main').css('height', '100vh');
 }
 
 function createHeaderForTravelerDashboard(traveler) {
@@ -206,4 +210,49 @@ function insertPendingTrips(traveler) {
   } else {
     $('.pending-trips').append(`<p>You don't have any pending trips.</p>`).css('text-align', 'center');
   }
+}
+
+function displayAdminLogInScreen(event) {
+  event.preventDefault();
+  $('h1').text('Wonderland Admin Login Page')
+  $('#user').attr('placeholder', 'admin username')
+  $('main h3').remove();
+  $('#sign-in-form h2').remove();
+  $('#sign-in-form p').remove();
+  $('#sign-in-form button').remove();
+  $('#sign-in-form').append(`<button id="admin-sign-in" type='button'>Sign In</button>`)
+  $('main').css('background', '#7b8a56')
+  $('h1').css('font-size', '4em');
+  $('#sign-in-form').css('background', '#cad0bb');
+  $('#sign-in-form').css('margin-top', '5%');
+  $('sign-in-form').css('height', '30%');
+  $('#admin-sign-in').on('click', signInAdmin);
+}
+
+function createAgent() {
+  let agent = new TravelAgent(allData.trips);
+  agent.calculateIncomeForEachTrip();
+}
+
+function signInAdmin() {
+  if ($('#user').val() === 'agency' && $('#password').val() === 'travel2020') {
+    let agent = new TravelAgent(allData.trips);
+    createAgentDashboard(agent);
+    createHeaderForAgentDashboard(agent);
+  } else {
+    alert('Your username or passowrd is not correct.');
+  }
+}
+
+function createAgentDashboard(admin) {
+  $('main').html(`<section>
+    <h3>New Trip Requests</h3>
+    <h3>Total Income Generated This Year:</h3>
+    <h3>Travelers on Trips Today:</h3>
+    </section>`)
+}
+
+function createHeaderForAgentDashboard(admin) {
+  $('header section').html(`<img src="./images/user.svg" alt="profile icon">
+    <p>Admin</p>`);
 }

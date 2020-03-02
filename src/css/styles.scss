@@ -130,7 +130,8 @@ form input {
   width: 100%;
 }
 
-#sign-in-form form button {
+#sign-in-form form button,
+#admin-sign-in {
 	background: #DC5D58;
 	border: 0;
 	border-radius: 3px;
