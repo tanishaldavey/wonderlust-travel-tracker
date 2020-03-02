@@ -101,7 +101,9 @@ function signInTraveler() {
     currentTraveler = travelers[userId - 1];
     createHeaderForTravelerDashboard(currentTraveler)
     createTravelerDashboard(currentTraveler)
-    insertPastTrip(currentTraveler);
+    insertPastTrips(currentTraveler);
+    insertUpcomingTrips(currentTraveler);
+    insertPendingTrips(currentTraveler);
   } else {
     alert('Your username or passowrd is not correct.')
   }
@@ -111,15 +113,13 @@ function createTravelerDashboard(traveler) {
   $('main').html(`<section class="traveler-dashboard">
       <p>$total this year on trips</p>
     </section>
-    <section class="display-trips">
+    <section class="display-trips pending-trips">
       <h3>Pending Trips</h3>
-      <div class="pending">
-      </div>
     </section>
-    <section class="display-trips">
+    <section class="display-trips upcoming-trips">
     <h3>Upcoming Trips</h3>
     </section>
-    <section class="display-trips">
+    <section class="display-trips past-trips">
     <h3>Past Trips</h3>
     </section>`)
     $('.traveler-dashboard #yearly-total-spent-on-trips').css('text-align', 'right');
@@ -133,9 +133,30 @@ function createHeaderForTravelerDashboard(traveler) {
   $('header section p').css('margin-left', '-5%')
 }
 
-function insertPastTrip(traveler) {
-  traveler.pastTrips.forEach(trip => {
-    console.log(trip);
-    $('.pending').append(`<p>${trip.id}</p>`)
-  })
+function insertPastTrips(traveler) {
+  if (traveler.pastTrips.length !== 0) {
+    traveler.pastTrips.forEach(trip => {
+      $('.past-trips').append(`<p>${trip.id}</p>`)
+    });
+  } else {
+    $('.past-trips').append(`<p>You don't have any past trips.</p>`)
+  }
+}
+function insertUpcomingTrips(traveler) {
+  if (traveler.upcomingTrips.length !== 0) {
+    traveler.upcomingTrips.forEach(trip => {
+      $('.upcoming-trips').append(`<p>${trip.id}</p>`)
+    });
+  } else {
+    $('.upcoming-trips').append(`<p>You don't have any upcoming trips.</p>`)
+  }
+}
+function insertPendingTrips(traveler) {
+  if (traveler.pendingTrips.length !== 0) {
+    traveler.pendingTrips.forEach(trip => {
+      $('.pending-trips').append(`<p>${trip.id}</p>`)
+    });
+  } else {
+    $('.pending-trips').append(`<p>You don't have any pending trips.</p>`)
+  }
 }
