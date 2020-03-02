@@ -32,8 +32,6 @@ let signInButton = $('#sign-in-submit');
 let allData, destination, trip, traveler;
 
 signInButton.on('click', signInTraveler);
-// landingPageHome.on('click', fireEventsOnMain);
-
 
 $(document).ready(() => {
   Promise.all([travlersData, destinationsData, tripsData])
@@ -51,24 +49,36 @@ $(document).ready(() => {
 
 let allDestinations = () => {
   return allData.destinations.map(destinationData => {
-     destination = new Destination(destinationData)
+     return destination = new Destination(destinationData)
      // createDestinationCard(destination);
   });
 };
 
 let allTrips = () => {
   return allData.trips.map(tripData => {
-    trip = new Trip(tripData, allData.destinations)
+    return trip = new Trip(tripData, allData.destinations)
     // console.log(trip);
   });
 };
 
 let allTravelers = () => {
   return allData.travelers.map(travelersData => {
-    traveler = new Traveler(travelersData, allData.trips)
-    // console.log(traveler);
+    return traveler = new Traveler(travelersData, allData.trips)
   });
 };
+
+let updateTravelerProperties = () => {
+  let updatedTravelers = [];
+  allTravelers().forEach(traveler => {
+    traveler.getPastTrips();
+    traveler.getPendingTrips();
+    traveler.getApprovedUpcomingTrips();
+    // traveler.getTotalCostOfTrip(); //This is breaking EVERYTHING!!!
+    updatedTravelers.push(traveler)
+  });
+  // console.log(updatedTravelers);
+  return updatedTravelers;
+}
 
 //should probably be moved to a DOMupdates.js file
 // let createDestinationCard = (destination) => {
@@ -85,23 +95,26 @@ function signInTraveler() {
   let userInput = $('#user').val();
   let passwordInput = $('#password').val();
   let userId = userInput.slice(8);
+  let travelers = updateTravelerProperties();
+  let currentTraveler;
   if ((typeof parseInt(userInput[8])) === 'number' && passwordInput === 'travel2020') {
-    //Display a new page
-    console.log('Do the thing');
-    createHeaderForTravelerDashboard()
-    createTravelerDashboard()
-    return userId;
+    currentTraveler = travelers[userId - 1];
+    createHeaderForTravelerDashboard(currentTraveler)
+    createTravelerDashboard(currentTraveler)
+    insertPastTrip(currentTraveler);
   } else {
     alert('Your username or passowrd is not correct.')
   }
 }
 
-function createTravelerDashboard() {
+function createTravelerDashboard(traveler) {
   $('main').html(`<section class="traveler-dashboard">
-      <p id="yearly-total-spent-on-trips">You've spent $total this year on trips</p>
+      <p>$total this year on trips</p>
     </section>
     <section class="display-trips">
       <h3>Pending Trips</h3>
+      <div class="pending">
+      </div>
     </section>
     <section class="display-trips">
     <h3>Upcoming Trips</h3>
@@ -112,11 +125,17 @@ function createTravelerDashboard() {
     $('.traveler-dashboard #yearly-total-spent-on-trips').css('text-align', 'right');
 }
 
-function createHeaderForTravelerDashboard() {
+function createHeaderForTravelerDashboard(traveler) {
   $('header section').css('width', '30%')
   $('header section').css('justify-content', 'flex-end')
   $('header section').html(`<img src="./images/user.svg" alt="profile icon">
-    <p>Welcome User</p>`)
+    <p>${traveler.name}</p>`)
   $('header section p').css('margin-left', '-5%')
+}
 
+function insertPastTrip(traveler) {
+  traveler.pastTrips.forEach(trip => {
+    console.log(trip);
+    $('.pending').append(`<p>${trip.id}</p>`)
+  })
 }
