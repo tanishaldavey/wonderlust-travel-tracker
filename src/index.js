@@ -149,14 +149,14 @@ function signInAdmin() {
 
 //should probably be moved to a DOMupdates.js file
 function createDestinationCard() {
-  console.log('yoooooooo');
   allDestinations().forEach(destination => {
-    $('.all-destination-cards').append(`<div>
+    $('.all-destination-cards').append(`<div class="destination">
       <p>${destination.name}</p>
-      <img class="destination-img" "src=${destination.image} alt=${destination.alt}>
-      <p>${destination.estimatedLodgingCostPerDay}</p>
-      <p>${destination.estimatedFlightCostPerPerson}</p>`)
+      <img class="destination-img" src="${destination.image}" alt=${destination.alt}>
+      <p>Lodging Per Day: $${destination.estimatedLodgingCostPerDay}.00</p>
+      <p>Flight Per Person: $${destination.estimatedFlightCostPerPerson}.00</p>`)
   });
+  $('main').css('height', 'auto');
 }
 
 
