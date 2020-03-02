@@ -71,13 +71,45 @@ let updateTravelerProperties = () => {
   let updatedTravelers = [];
   allTravelers().forEach(traveler => {
     traveler.getPastTrips();
+    updatePastTripProperties(traveler);
     traveler.getPendingTrips();
+    updatePendingTripProperties(traveler)
     traveler.getApprovedUpcomingTrips();
+    updateUpcomingTripProperties(traveler);
     // traveler.getTotalCostOfTrip(); //This is breaking EVERYTHING!!!
     updatedTravelers.push(traveler)
   });
-  // console.log(updatedTravelers);
   return updatedTravelers;
+}
+
+let updatePastTripProperties = (user) => {
+  let updatedPastTrips = [];
+  user.pastTrips.forEach(trip => {
+    trip = new Trip(trip, allData.destinations);
+    trip.getDestinationName()
+    updatedPastTrips.push(trip)
+  })
+  return user.pastTrips = updatedPastTrips;
+}
+
+let updatePendingTripProperties = (user) => {
+  let updatedPendingTrips = [];
+  user.pendingTrips.forEach(trip => {
+    trip = new Trip(trip, allData.destinations);
+    trip.getDestinationName()
+    updatedPendingTrips.push(trip);
+  })
+  return user.pendingTrips = updatedPendingTrips;
+}
+
+let updateUpcomingTripProperties = (user) => {
+  let updatedUpcomingTrips = [];
+  user.upcomingTrips.forEach(trip => {
+    trip = new Trip(trip, allData.destinations);
+    trip.getDestinationName()
+    updatedUpcomingTrips.push(trip);
+  })
+  return user.upcomingTrips = updatedUpcomingTrips;
 }
 
 //should probably be moved to a DOMupdates.js file
@@ -136,7 +168,8 @@ function createHeaderForTravelerDashboard(traveler) {
 function insertPastTrips(traveler) {
   if (traveler.pastTrips.length !== 0) {
     traveler.pastTrips.forEach(trip => {
-      $('.past-trips').append(`<p>${trip.id}</p>`)
+      $('.past-trips').append(`<p>${trip.tripDestinationName}</p>`)
+      $('.past-trips').append(`<p>${trip.date}</p>`)
     });
   } else {
     $('.past-trips').append(`<p>You don't have any past trips.</p>`)
@@ -145,7 +178,8 @@ function insertPastTrips(traveler) {
 function insertUpcomingTrips(traveler) {
   if (traveler.upcomingTrips.length !== 0) {
     traveler.upcomingTrips.forEach(trip => {
-      $('.upcoming-trips').append(`<p>${trip.id}</p>`)
+      $('.upcoming-trips').append(`<p>${trip.tripDestinationName}</p>`)
+      $('.upcoming-trips').append(`<p>${trip.date}</p>`)
     });
   } else {
     $('.upcoming-trips').append(`<p>You don't have any upcoming trips.</p>`)
@@ -154,7 +188,8 @@ function insertUpcomingTrips(traveler) {
 function insertPendingTrips(traveler) {
   if (traveler.pendingTrips.length !== 0) {
     traveler.pendingTrips.forEach(trip => {
-      $('.pending-trips').append(`<p>${trip.id}</p>`)
+      $('.pending-trips').append(`<p>${trip.tripDestinationName}</p>`)
+      $('.pending-trips').append(`<p>${trip.date}</p>`)
     });
   } else {
     $('.pending-trips').append(`<p>You don't have any pending trips.</p>`)
