@@ -30,9 +30,7 @@ let domUpdates = {
 
   displayBookingPage() {
     event.preventDefault();
-    console.log('helloooo');
     $('main').html(`<section class="all-destination-cards"></section>`)
-    $('.all-destination-cards').css('border', '2px solid red');
     createDestinationCard();
   },
 
