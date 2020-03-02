@@ -154,7 +154,8 @@ function createDestinationCard() {
       <p>${destination.name}</p>
       <img class="destination-img" src="${destination.image}" alt=${destination.alt}>
       <p>Lodging Per Day: $${destination.estimatedLodgingCostPerDay}.00</p>
-      <p>Flight Per Person: $${destination.estimatedFlightCostPerPerson}.00</p>`)
+      <p>Flight Per Person: $${destination.estimatedFlightCostPerPerson}.00</p>
+      <button id="book-trip-btn">Book This Trip<button>`)
   });
   $('main').css('height', 'auto');
 }
