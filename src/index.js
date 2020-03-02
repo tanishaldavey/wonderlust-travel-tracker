@@ -1,35 +1,35 @@
-// This is the JavaScript entry file - your code begins here
-// Do not delete or rename this file ********
-
-// An example of how you import jQuery into a JS file if you use jQuery in that file
 import $ from 'jquery';
-
-// An example of how you tell webpack to use a CSS (SCSS) file
+//STYLESHEETS
 import './css/base.scss';
 import './css/styles.scss';
-
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
-import './images/w-icon.png'
-import './images/user.svg'
-
+//CLASSES
 import Destination from './Destination.js'
 import Trip from './Trip.js'
 import Traveler from './Traveler.js'
+//IMAGES USED IN THE INDEX
+import './images/w-icon.png'
+import './images/user.svg'
+//FUNCTIONS FROM DOMUPDATES
+
+
 
 const travlersData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/travelers/travelers')
   .then(response => response.json())
   .then(data => data.travelers)
+  .catch(error => console.log(error))
 
 const destinationsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/destinations/destinations')
   .then(response => response.json())
   .then(data => data.destinations)
+  .catch(error => console.log(error))
 
 const tripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/trips/trips')
   .then(response => response.json())
   .then(data => data.trips)
+  .catch(error => console.log(error))
 
-let signInButton = $('#sign-in-submit');
-let adminLogIn = $('#admin-log-in');
+const signInButton = $('#sign-in-submit');
+const adminLogIn = $('#admin-log-in');
 let allData, destination, trip, traveler;
 
 signInButton.on('click', signInTraveler);
