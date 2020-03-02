@@ -29,13 +29,12 @@ const tripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/191
   .then(data => data.trips)
   .catch(error => console.log(error))
 
-const signInButton = $('#sign-in-submit');
-const adminLogIn = $('#admin-log-in');
 let allData, destination, trip, traveler;
 
-signInButton.on('click', signInTraveler);
-adminLogIn.on('click', domUpdates.displayAdminLogInScreen);
-adminLogIn.on('click', domUpdates.createAdminSignInButton);
+$('#sign-in-submit').on('click', signInTraveler);
+$('#admin-log-in').on('click', domUpdates.displayAdminLogInScreen);
+$('#admin-log-in').on('click', domUpdates.createAdminSignInButton);
+
 
 $(document).ready(() => {
   Promise.all([travlersData, destinationsData, tripsData])
@@ -131,12 +130,14 @@ function signInTraveler() {
   }
 }
 
-//need to change functionality so that a
+function displayBookingPage() {
+  // event.preventDefault();
+  console.log('helloooo');
+}
 
 function signInAdmin() {
     if ($('#user').val() === 'agency' && $('#password').val() === 'travel2020') {
       let agent = new TravelAgent(allData.trips);
-      console.log("hellooooo");
       domUpdates.createAgentDashboard(agent);
       domUpdates.createHeaderForAgentDashboard(agent);
     } else {
@@ -144,15 +145,19 @@ function signInAdmin() {
     }
   }
 
+
+
 //should probably be moved to a DOMupdates.js file
-// let createDestinationCard = (destination) => {
-//   $('.destination-cards').append(`<div>
-//     <p>${destination.name}</p>
-//     <img src=${destination.image} alt=${destination.alt}>
-//     <p>${destination.estimatedLodgingCostPerDay}</p>
-//     <p>${destination.estimatedFlightCostPerPerson}</p>`)
-// };
+function createDestinationCard() {
+  console.log('yoooooooo');
+  allDestinations().forEach(destination => {
+    $('.all-destination-cards').append(`<div>
+      <p>${destination.name}</p>
+      <img class="destination-img" "src=${destination.image} alt=${destination.alt}>
+      <p>${destination.estimatedLodgingCostPerDay}</p>
+      <p>${destination.estimatedFlightCostPerPerson}</p>`)
+  });
+}
 
-//DOMUpdates.js file
 
-export default signInAdmin;
+export { signInAdmin, createDestinationCard }
