@@ -1,12 +1,12 @@
 import $ from 'jquery';
-import signInAdmin from './index.js'
+import { signInAdmin, createDestinationCard } from './index.js';
 
 let domUpdates = {
   //TRAVELER FUNCTIONALITY
   createTravelerDashboard(traveler) {
     $('main').html(`<section class="traveler-dashboard">
         <p>$total spent this year on trips</p>
-        <button>Book New Trip<button>
+        <button id="booking-page-btn" type="button">Book New Trip<button>
       </section>
       <section class="display-trips pending-trips">
         <h3>Pending Trips</h3>
@@ -25,6 +25,13 @@ let domUpdates = {
       </section>`)
       $('.traveler-dashboard #yearly-total-spent-on-trips').css('text-align', 'right');
       $('main').css('height', '100vh');
+      $('#booking-page-btn').on('click', domUpdates.displayBookingPage);
+  },
+
+  displayBookingPage() {
+    event.preventDefault();
+    $('main').html(`<section class="all-destination-cards"></section>`)
+    createDestinationCard();
   },
 
   createHeaderForTravelerDashboard(traveler) {
@@ -76,19 +83,16 @@ let domUpdates = {
   //ADMIN FUNCTIONALITY
   displayAdminLogInScreen(event) {
     event.preventDefault();
-    $('h1').text('Wonderland Admin Login Page')
+    $('h1').text('Wonderlust Admin Login Page')
     $('#user').attr('placeholder', 'admin username')
     $('main h3').remove();
     $('#sign-in-form h2').remove();
     $('#sign-in-form p').remove();
-    // $('#sign-in-form button').remove();
-    // $('#sign-in-form').append(`<button id="admin-sign-in" type='button'>Sign In</button>`)
     $('main').css('background', '#7b8a56')
     $('h1').css('font-size', '4em');
     $('#sign-in-form').css('background', '#cad0bb');
     $('#sign-in-form').css('margin-top', '5%');
     $('sign-in-form').css('height', '30%');
-    // $('#admin-sign-in').on('click', signInAdmin);
   },
 
   createAdminSignInButton() {
