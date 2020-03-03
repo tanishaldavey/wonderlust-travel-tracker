@@ -176,7 +176,7 @@ function displayBookingForm() {
     $('main').append(`<section class="display-trip-cost"></section>`)
     $('#cancel-booking').on('click', domUpdates.displayBookingPage);
     $('input[id="duration"], input[id="travelers"], input[id="date"]').on('input', updateTotalCost);
-    $('#submit-trip-btn').on('click', submitTripRequest)
+    $('#submit-trip-btn').on('click', submitNewTripRequest)
 }
 
 function updateTotalCost() {
@@ -191,7 +191,7 @@ function updateTotalCost() {
     <p>Total Cost of this Trip:<p>`)
 }
 
-function submitTripRequest() {
+function createPostRequestData() {
   let destinationID = event.target.parentElement.parentElement.parentElement.id;
   let userID = event.target.parentElement.parentElement.parentElement.parentElement.id;
   let tripData = {
@@ -204,11 +204,25 @@ function submitTripRequest() {
      "status": "pending",
      "suggestedActivities": []
    };
-  return tripData
+  return tripData;
 }
 
 let generateRandomID = () => {
   return Math.random().toString(36).substr(2, 9);
+}
+
+let submitNewTripRequest = () => {
+  let tripInfo = createPostRequestData()
+  fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/trips/trips', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(tripInfo)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .then(error => console.log(error))
 }
 
 
