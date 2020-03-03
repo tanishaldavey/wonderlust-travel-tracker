@@ -174,6 +174,9 @@ let domUpdates = {
           $('.delete-trip').on('click', denyTrip);
       })
     }
+  },
+  removeTripAfterPermissionUpdate(tripId) {
+    $(`div[id=${tripId}]`).remove();
   }
 }
 

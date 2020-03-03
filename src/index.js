@@ -160,13 +160,13 @@ let approveTrip = () => {
   })
   .then(response => response.json())
   .then(data => console.log(data))
-  .then(removeTripAfterPermissionUpdate(tripInfo.id))
+  .then(domUpdates.removeTripAfterPermissionUpdate(tripInfo.id))
   .catch(error => console.log(error))
 }
 
-function removeTripAfterPermissionUpdate(tripId) {
-  $(`div[id=${tripId}]`).remove();
-}
+// function removeTripAfterPermissionUpdate(tripId) {
+//   $(`div[id=${tripId}]`).remove();
+// }
 
 let createTripDenialData = () => {
   let tripId = event.target.parentElement.id;
@@ -187,7 +187,7 @@ let denyTrip = () => {
   })
   .then(response => response.json())
   .then(data => console.log(data))
-  .then(removeTripAfterPermissionUpdate(tripInfo.id))
+  .then(domUpdates.removeTripAfterPermissionUpdate(tripInfo.id))
   .catch(error => console.log(error))
 }
 
