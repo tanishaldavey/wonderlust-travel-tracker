@@ -135,6 +135,7 @@ function signInAdmin() {
       domUpdates.createAgentDashboard(agent);
       domUpdates.createHeaderForAgentDashboard(agent);
       displayAllPendingTripRequests();
+      displayIncomeGenerated();
     } else {
       alert('Your username or passowrd is not correct.');
     }
@@ -157,20 +158,28 @@ function displayAllPendingTripRequests() {
 
     })
   }
+}
 
+function getTripsForThisYear() {
+  let currentYear = new Date().getFullYear();
+  return allTrips().filter(trip => {
+    let tripYear = parseInt(trip.date.slice(0, 4));
+    return tripYear === currentYear;
+  });
+}
 //function needs to do trips that are this year 2020!!
-  function calculateIncomeGeneratedThisYear() {
-    return allTrips().reduce((totalIncome, trip) => {
+function calculateIncomeGeneratedThisYear() {
+  let tripsThisYear = getTripsForThisYear()
+    return tripsThisYear.reduce((totalIncome, trip) => {
       trip = new Trip(trip, allData.destinations)
       totalIncome += (trip.calculateCostOfTrip() * .1);
       return totalIncome;
-    }, 0)
+    }, 0);
   }
-}
 
-// function displayIncomeGenerated() {
-//   $('.total-income').append(`<p>$${calculateIncomeGeneratedThisYear()}</p>`).css('text-align', 'center');
-// }
+function displayIncomeGenerated() {
+  $('.total-income').append(`<p>$${calculateIncomeGeneratedThisYear()}</p>`).css('text-align', 'center');
+}
 
 function createDestinationCard() {
   allDestinations().forEach(destination => {
@@ -237,10 +246,6 @@ function createPostRequestData() {
      "suggestedActivities": []
    };
   return tripData;
-}
-
-let generateRandomID = () => {
-  return Math.random().toString(36).substr(2, 9);
 }
 
 let submitNewTripRequest = () => {
