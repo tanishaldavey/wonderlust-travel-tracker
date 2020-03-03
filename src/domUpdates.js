@@ -84,6 +84,8 @@ let domUpdates = {
   //ADMIN FUNCTIONALITY
   displayAdminLogInScreen(event) {
     event.preventDefault();
+    $('#user').val('');
+    $('#password').val('')
     $('h1').text('Wonderlust Admin Login Page')
     $('#user').attr('placeholder', 'admin username')
     $('main h3').remove();
