@@ -149,14 +149,28 @@ function displayAllPendingTripRequests() {
       $('.trips-to-approve').append(`<div>
         <p>${trip.date}</p>
         <p>${trip.getDestinationName()}</p>
-        <p>Commision: $${trip.calculateCostOfTrip() * .1}</p>
+        <p>Trip Cost w/Commission: $${trip.calculateCostOfTrip() * .1}</p>
         <p>${trip.status}</p>
         <button id="approve-trip" type="button">Approve</button>
+        <button id="delete-trip" type="button"><Deny</button>
         </div>`);
 
     })
   }
+
+//function needs to do trips that are this year 2020!!
+  function calculateIncomeGeneratedThisYear() {
+    return allTrips().reduce((totalIncome, trip) => {
+      trip = new Trip(trip, allData.destinations)
+      totalIncome += (trip.calculateCostOfTrip() * .1);
+      return totalIncome;
+    }, 0)
+  }
 }
+
+// function displayIncomeGenerated() {
+//   $('.total-income').append(`<p>$${calculateIncomeGeneratedThisYear()}</p>`).css('text-align', 'center');
+// }
 
 function createDestinationCard() {
   allDestinations().forEach(destination => {
@@ -240,7 +254,15 @@ let submitNewTripRequest = () => {
   })
   .then(response => response.json())
   .then(data => console.log(data))
-  .then(error => console.log(error))
+  .then(displayNavigationOptions)
+  .catch(error => console.log(error))
+}
+
+function displayNavigationOptions() {
+  $('main').html(`<p>Your trip has been booked successfully!</p>
+    <a id="back-to-booking-page" href="" aria-label="Click here to book another trip"><p>Book another trip</p></a>
+    <a href="" aria-label="Click here for your dashboard"><p>Back to your dashboard</p></a>`)
+    $('#back-to-booking-page').on('click', domUpdates.displayBookingPage)
 }
 
 
