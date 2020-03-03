@@ -67,16 +67,8 @@ describe('TravelAgent', () => {
     expect(travelAgent).to.be.instanceOf(TravelAgent);
   });
 
-  it('should be able to see new trip requests (pending trip requests)', () => {
-    expect(travelAgent.listNewTripRequests()).to.deep.equal([tripsData[5]]);
-  });
-
-  it('should be able to calculate total income generated this year (10% of user trip costs)', () => {
-    expect(travelAgent.calculateIncomeForYear()).to.equal(8832);
-  });
-
   it('should be able to see the number of travelers on trips for today\'s date', () => {
     //checking against today's date 3/1/2020
     expect(travelAgent.getDailyNumberOfTravelers()).to.equal(0);
-  })
+  });
 });
