@@ -148,20 +148,21 @@ function displayAllPendingTripRequests() {
       trip = new Trip(trip, allData.destinations)
       if (trip.status === 'pending')
       $('.trips-to-approve').append(`<div id=${trip.id}>
-        <p>${trip.date}</p>
-        <p>${trip.getDestinationName()}</p>
+        <p>Traveler ID: ${trip.userID}</p>
+        <p>Date: ${trip.date}</p>
+        <p>Destination: ${trip.getDestinationName()}</p>
         <p>Trip Commission: $${trip.calculateCostOfTrip() * .1}</p>
         <p>${trip.status}</p>
         <button class="approve-trip" type="button">Approve</button>
         <button class="delete-trip" type="button">Deny</button>
         </div>`);
-        $('.approve-trip').on('click', createTripApprovalData);
-        // $('.delete-trip').on('click', createTripDenialData);
+        $('.approve-trip').on('click', approveTrip);
+        $('.delete-trip').on('click', denyTrip);
     })
   }
 }
 
-function createTripApprovalData() {
+let createTripApprovalData = () => {
   let tripId = event.target.parentElement.id;
   let tripData = {
     "id": parseInt(tripId),
@@ -169,6 +170,50 @@ function createTripApprovalData() {
   }
   return tripData;
 }
+
+let approveTrip = () => {
+  let tripInfo = createTripApprovalData();
+  fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/trips/updateTrip', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(tripInfo)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .then(removeTripAfterPermissionUpdate(tripInfo.id))
+  .catch(error => console.log(error))
+}
+
+function removeTripAfterPermissionUpdate(tripId) {
+  $(`div[id=${tripId}]`).remove();
+}
+
+let createTripDenialData = () => {
+  let tripId = event.target.parentElement.id;
+  let tripData = {
+    "id": parseInt(tripId),
+  }
+  return tripData;
+}
+
+let denyTrip = () => {
+  let tripInfo = createTripDenialData();
+  fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/trips/trips', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(tripInfo)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .then(removeTripAfterPermissionUpdate(tripInfo.id))
+  .catch(error => console.log(error))
+}
+
+
 
 
 
@@ -236,7 +281,6 @@ function updateTotalCost() {
   //fix calculation on this
   let duration = $('#duration').val();
   let travelers = $('#travelers').val();
-  console.log($('#date').val());
 
   $('.display-trip-cost').html(`<p>Total Cost of Lodging For This Trip: $${travelers * duration * 500}.00</p>
     <p>Total Cost of Flights For This Trip: $${travelers * 500}.00</p>
