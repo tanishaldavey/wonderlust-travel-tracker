@@ -134,12 +134,30 @@ function signInAdmin() {
       let agent = new TravelAgent(allData.trips);
       domUpdates.createAgentDashboard(agent);
       domUpdates.createHeaderForAgentDashboard(agent);
+      displayAllPendingTripRequests();
     } else {
       alert('Your username or passowrd is not correct.');
     }
   }
 
-//should probably be moved to a DOMupdates.js file
+//listNewTripRequests is the method to use
+function displayAllPendingTripRequests() {
+  if (allData.trips.length !== 0) {
+    allData.trips.forEach(trip => {
+      trip = new Trip(trip, allData.destinations)
+      if (trip.status === 'pending')
+      $('.trips-to-approve').append(`<div>
+        <p>${trip.date}</p>
+        <p>${trip.getDestinationName()}</p>
+        <p>Commision: $${trip.calculateCostOfTrip() * .1}</p>
+        <p>${trip.status}</p>
+        <button id="approve-trip" type="button">Approve</button>
+        </div>`);
+
+    })
+  }
+}
+
 function createDestinationCard() {
   allDestinations().forEach(destination => {
     $('.all-destination-cards').append(`<div id=${destination.id} class="destination">
