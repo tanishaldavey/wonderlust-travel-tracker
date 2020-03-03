@@ -134,12 +134,110 @@ function signInAdmin() {
       let agent = new TravelAgent(allData.trips);
       domUpdates.createAgentDashboard(agent);
       domUpdates.createHeaderForAgentDashboard(agent);
+      displayAllPendingTripRequests();
+      displayIncomeGenerated();
     } else {
       alert('Your username or passowrd is not correct.');
     }
   }
 
-//should probably be moved to a DOMupdates.js file
+//listNewTripRequests is the method to use
+function displayAllPendingTripRequests() {
+  if (allData.trips.length !== 0) {
+    allData.trips.forEach(trip => {
+      trip = new Trip(trip, allData.destinations)
+      if (trip.status === 'pending')
+      $('.trips-to-approve').append(`<div id=${trip.id}>
+        <p>Traveler ID: ${trip.userID}</p>
+        <p>Date: ${trip.date}</p>
+        <p>Destination: ${trip.getDestinationName()}</p>
+        <p>Trip Commission: $${trip.calculateCostOfTrip() * .1}</p>
+        <p>${trip.status}</p>
+        <button class="approve-trip" type="button">Approve</button>
+        <button class="delete-trip" type="button">Deny</button>
+        </div>`);
+        $('.approve-trip').on('click', approveTrip);
+        $('.delete-trip').on('click', denyTrip);
+    })
+  }
+}
+
+let createTripApprovalData = () => {
+  let tripId = event.target.parentElement.id;
+  let tripData = {
+    "id": parseInt(tripId),
+    "status": "approved"
+  }
+  return tripData;
+}
+
+let approveTrip = () => {
+  let tripInfo = createTripApprovalData();
+  fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/trips/updateTrip', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(tripInfo)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .then(removeTripAfterPermissionUpdate(tripInfo.id))
+  .catch(error => console.log(error))
+}
+
+function removeTripAfterPermissionUpdate(tripId) {
+  $(`div[id=${tripId}]`).remove();
+}
+
+let createTripDenialData = () => {
+  let tripId = event.target.parentElement.id;
+  let tripData = {
+    "id": parseInt(tripId),
+  }
+  return tripData;
+}
+
+let denyTrip = () => {
+  let tripInfo = createTripDenialData();
+  fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/trips/trips', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(tripInfo)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .then(removeTripAfterPermissionUpdate(tripInfo.id))
+  .catch(error => console.log(error))
+}
+
+
+
+
+
+function getTripsForThisYear() {
+  let currentYear = new Date().getFullYear();
+  return allTrips().filter(trip => {
+    let tripYear = parseInt(trip.date.slice(0, 4));
+    return tripYear === currentYear;
+  });
+}
+//function needs to do trips that are this year 2020!!
+function calculateIncomeGeneratedThisYear() {
+  let tripsThisYear = getTripsForThisYear()
+    return tripsThisYear.reduce((totalIncome, trip) => {
+      trip = new Trip(trip, allData.destinations)
+      totalIncome += (trip.calculateCostOfTrip() * .1);
+      return totalIncome;
+    }, 0);
+  }
+
+function displayIncomeGenerated() {
+  $('.total-income').append(`<p>$${calculateIncomeGeneratedThisYear()}</p>`).css('text-align', 'center');
+}
+
 function createDestinationCard() {
   allDestinations().forEach(destination => {
     $('.all-destination-cards').append(`<div id=${destination.id} class="destination">
@@ -183,7 +281,6 @@ function updateTotalCost() {
   //fix calculation on this
   let duration = $('#duration').val();
   let travelers = $('#travelers').val();
-  console.log($('#date').val());
 
   $('.display-trip-cost').html(`<p>Total Cost of Lodging For This Trip: $${travelers * duration * 500}.00</p>
     <p>Total Cost of Flights For This Trip: $${travelers * 500}.00</p>
@@ -191,7 +288,7 @@ function updateTotalCost() {
     <p>Total Cost of this Trip:<p>`)
 }
 
-function createPostRequestData() {
+function createTripBookingData() {
   let destinationID = event.target.parentElement.parentElement.parentElement.id;
   let userID = event.target.parentElement.parentElement.parentElement.parentElement.id;
   let tripData = {
@@ -207,12 +304,8 @@ function createPostRequestData() {
   return tripData;
 }
 
-let generateRandomID = () => {
-  return Math.random().toString(36).substr(2, 9);
-}
-
 let submitNewTripRequest = () => {
-  let tripInfo = createPostRequestData()
+  let tripInfo = createTripBookingData()
   fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/trips/trips', {
     method: 'POST',
     headers: {
@@ -222,7 +315,15 @@ let submitNewTripRequest = () => {
   })
   .then(response => response.json())
   .then(data => console.log(data))
-  .then(error => console.log(error))
+  .then(displayNavigationOptions)
+  .catch(error => console.log(error))
+}
+
+function displayNavigationOptions() {
+  $('main').html(`<p>Your trip has been booked successfully!</p>
+    <a id="back-to-booking-page" href="" aria-label="Click here to book another trip"><p>Book another trip</p></a>
+    <a href="" aria-label="Click here for your dashboard"><p>Back to your dashboard</p></a>`)
+    $('#back-to-booking-page').on('click', domUpdates.displayBookingPage)
 }
 
 
