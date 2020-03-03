@@ -86,9 +86,33 @@ let domUpdates = {
         <button class='trip-booking-btn'>Book This Trip<button>`)
     });
     $('main').css('height', 'auto');
-    $('.trip-booking-btn').on('click', displayBookingForm);
+    $('.trip-booking-btn').on('click', domUpdates.displayBookingForm);
   },
-
+  displayBookingForm() {
+    let destinationID = event.target.parentElement.id;
+    let destination = allDestinations()[destinationID - 1];
+    $('main').html(`<section id=${destination.id}>
+        <form id="booking-trip-form">
+        <p>Book a trip to <span>${destination.name}</span><p>
+        <label for="date">Date
+          <input id="date" type="date">
+        </label>
+        <label for="duration"> Duration
+          <input id="duration" type="number">
+        </label>
+        <label for="travelers">Number of Travelers
+          <input id="travelers" type="number">
+        </label>
+        <button id="submit-trip-btn" type="button">Submit Trip</button>
+        <button id="cancel-booking" type="button">Cancel</button>
+        </form>
+        </section>`)
+      $('main').css('height', '90vh');
+      $('main').append(`<section class="display-trip-cost"></section>`)
+      $('#cancel-booking').on('click', domUpdates.displayBookingPage);
+      $('input[id="duration"], input[id="travelers"], input[id="date"]').on('input', updateTotalCost);
+      $('#submit-trip-btn').on('click', submitNewTripRequest)
+  },
 
 
 
