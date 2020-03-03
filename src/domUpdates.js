@@ -5,7 +5,6 @@ import { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTot
 let domUpdates = {
   //TRAVELER FUNCTIONALITY
   createTravelerDashboard(traveler) {
-    console.log(traveler);
     $('main').html(`<section class="traveler-dashboard">
         <p>$${Math.round(moneySpentOnTripsThisYear(traveler))} spent this year on trips</p>
         <button id="booking-page-btn" type="button">Book New Trip<button>
@@ -112,8 +111,21 @@ let domUpdates = {
       $('main').css('height', '90vh');
       $('main').append(`<section class="display-trip-cost"></section>`)
       $('#cancel-booking').on('click', domUpdates.displayBookingPage);
-      $('input[id="duration"], input[id="travelers"], input[id="date"]').on('input', updateTotalCost);
+      $('input[id="duration"], input[id="travelers"], input[id="date"]').on('input', domUpdates.updateTotalCost);
       $('#submit-trip-btn').on('click', submitNewTripRequest)
+
+  },
+  updateTotalCost() {
+    let duration = $('#duration').val();
+    let travelers = $('#travelers').val();
+    let destinationID = event.target.parentElement.parentElement.parentElement.parentElement.id;
+    let destination = allDestinations()[destinationID - 1];
+    let lodgingCost = travelers * duration * destination.estimatedLodgingCostPerDay;
+    let flightCost = travelers * destination.estimatedFlightCostPerPerson;
+    $('.display-trip-cost').html(`<p>Total Cost of Lodging For This Trip: $${lodgingCost}.00</p>
+      <p>Total Cost of Flights For This Trip: $${flightCost}.00</p>
+      <p>Travel Agent's 10% Fee: $${(lodgingCost + flightCost) * .1}.00</p>
+      <p>Total Cost of this Trip:$${Math.round((lodgingCost + flightCost) * 1.1)}.00<p>`)
   },
   displayNavigationOptions() {
     $('main').html(`<p>Your trip has been booked successfully!</p>

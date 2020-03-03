@@ -213,16 +213,6 @@ let moneySpentOnTripsThisYear = (traveler) => {
   }, 0)
 }
 
-function updateTotalCost() {
-  let duration = $('#duration').val();
-  let travelers = $('#travelers').val();
-
-  $('.display-trip-cost').html(`<p>Total Cost of Lodging For This Trip: $${travelers * duration * 500}.00</p>
-    <p>Total Cost of Flights For This Trip: $${travelers * 500}.00</p>
-    <p>Travel Agent's 10% Fee: $${((duration * travelers * 500) + (travelers * 500)) * .1}.00</p>
-    <p>Total Cost of this Trip:<p>`)
-}
-
 function createTripBookingData() {
   let destinationID = event.target.parentElement.parentElement.parentElement.id;
   let userID = event.target.parentElement.parentElement.parentElement.parentElement.id;
