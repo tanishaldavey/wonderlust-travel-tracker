@@ -106,8 +106,8 @@ let domUpdates = {
     $('main').html(`<section>
       <h3>New Trip Requests</h3>
       <section class="trips-to-approve"></section>
-      <h3>Total Income Generated This Year:</h3>
-      <section></section>
+      <h3>Total Income Generated This Year</h3>
+      <section class="total-income"></section>
       <h3>Travelers on Trips Today:</h3>
       <section></section>
       </section>`)
