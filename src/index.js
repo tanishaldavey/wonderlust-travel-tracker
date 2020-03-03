@@ -34,7 +34,6 @@ $('#sign-in-submit').on('click', signInTraveler);
 $('#admin-log-in').on('click', domUpdates.displayAdminLogInScreen);
 $('#admin-log-in').on('click', domUpdates.createAdminSignInButton);
 
-
 $(document).ready(() => {
   Promise.all([travlersData, destinationsData, tripsData])
     .then(data => {
@@ -51,7 +50,7 @@ $(document).ready(() => {
 
 let allDestinations = () => {
   return allData.destinations.map(destinationData => {
-     return destination = new Destination(destinationData)
+    return  destination = new Destination(destinationData)
   });
 };
 
@@ -124,6 +123,7 @@ function signInTraveler() {
     domUpdates.insertPastTrips(currentTraveler);
     domUpdates.insertUpcomingTrips(currentTraveler);
     domUpdates.insertPendingTrips(currentTraveler);
+    ;
   } else {
     alert('Your username or passowrd is not correct.')
   }
@@ -134,33 +134,12 @@ function signInAdmin() {
       let agent = new TravelAgent(allData.trips);
       domUpdates.createAgentDashboard(agent);
       domUpdates.createHeaderForAgentDashboard(agent);
-      displayAllPendingTripRequests();
-      displayIncomeGenerated();
+      domUpdates.displayAllPendingTripRequests();
+      domUpdates.displayIncomeGenerated();
     } else {
       alert('Your username or passowrd is not correct.');
     }
   }
-
-//listNewTripRequests is the method to use
-function displayAllPendingTripRequests() {
-  if (allData.trips.length !== 0) {
-    allData.trips.forEach(trip => {
-      trip = new Trip(trip, allData.destinations)
-      if (trip.status === 'pending')
-      $('.trips-to-approve').append(`<div id=${trip.id}>
-        <p>Traveler ID: ${trip.userID}</p>
-        <p>Date: ${trip.date}</p>
-        <p>Destination: ${trip.getDestinationName()}</p>
-        <p>Trip Commission: $${trip.calculateCostOfTrip() * .1}</p>
-        <p>${trip.status}</p>
-        <button class="approve-trip" type="button">Approve</button>
-        <button class="delete-trip" type="button">Deny</button>
-        </div>`);
-        $('.approve-trip').on('click', approveTrip);
-        $('.delete-trip').on('click', denyTrip);
-    })
-  }
-}
 
 let createTripApprovalData = () => {
   let tripId = event.target.parentElement.id;
@@ -182,12 +161,8 @@ let approveTrip = () => {
   })
   .then(response => response.json())
   .then(data => console.log(data))
-  .then(removeTripAfterPermissionUpdate(tripInfo.id))
+  .then(domUpdates.removeTripAfterPermissionUpdate(tripInfo.id))
   .catch(error => console.log(error))
-}
-
-function removeTripAfterPermissionUpdate(tripId) {
-  $(`div[id=${tripId}]`).remove();
 }
 
 let createTripDenialData = () => {
@@ -209,24 +184,20 @@ let denyTrip = () => {
   })
   .then(response => response.json())
   .then(data => console.log(data))
-  .then(removeTripAfterPermissionUpdate(tripInfo.id))
+  .then(domUpdates.removeTripAfterPermissionUpdate(tripInfo.id))
   .catch(error => console.log(error))
 }
 
-
-
-
-
-function getTripsForThisYear() {
+let tripsForThisYear = (trips) => {
   let currentYear = new Date().getFullYear();
-  return allTrips().filter(trip => {
+  return trips.filter(trip => {
     let tripYear = parseInt(trip.date.slice(0, 4));
     return tripYear === currentYear;
   });
 }
-//function needs to do trips that are this year 2020!!
-function calculateIncomeGeneratedThisYear() {
-  let tripsThisYear = getTripsForThisYear()
+
+let incomeGeneratedThisYear = () => {
+  let tripsThisYear = tripsForThisYear(allTrips())
     return tripsThisYear.reduce((totalIncome, trip) => {
       trip = new Trip(trip, allData.destinations)
       totalIncome += (trip.calculateCostOfTrip() * .1);
@@ -234,51 +205,15 @@ function calculateIncomeGeneratedThisYear() {
     }, 0);
   }
 
-function displayIncomeGenerated() {
-  $('.total-income').append(`<p>$${calculateIncomeGeneratedThisYear()}</p>`).css('text-align', 'center');
-}
-
-function createDestinationCard() {
-  allDestinations().forEach(destination => {
-    $('.all-destination-cards').append(`<div id=${destination.id} class="destination">
-      <p>${destination.name}</p>
-      <img class="destination-img" src="${destination.image}" alt=${destination.alt}>
-      <p>Lodging Per Day: $${destination.estimatedLodgingCostPerDay}.00</p>
-      <p>Flight Per Person: $${destination.estimatedFlightCostPerPerson}.00</p>
-      <button class='trip-booking-btn'>Book This Trip<button>`)
-  });
-  $('main').css('height', 'auto');
-  $('.trip-booking-btn').on('click', displayBookingForm);
-}
-
-function displayBookingForm() {
-  let destinationID = event.target.parentElement.id;
-  let destination = allDestinations()[destinationID - 1];
-  $('main').html(`<section id=${destination.id}>
-      <form id="booking-trip-form">
-      <p>Book a trip to <span>${destination.name}</span><p>
-      <label for="date">Date
-        <input id="date" type="date">
-      </label>
-      <label for="duration"> Duration
-        <input id="duration" type="number">
-      </label>
-      <label for="travelers">Number of Travelers
-        <input id="travelers" type="number">
-      </label>
-      <button id="submit-trip-btn" type="button">Submit Trip</button>
-      <button id="cancel-booking" type="button">Cancel</button>
-      </form>
-      </section>`)
-    $('main').css('height', '90vh');
-    $('main').append(`<section class="display-trip-cost"></section>`)
-    $('#cancel-booking').on('click', domUpdates.displayBookingPage);
-    $('input[id="duration"], input[id="travelers"], input[id="date"]').on('input', updateTotalCost);
-    $('#submit-trip-btn').on('click', submitNewTripRequest)
+let moneySpentOnTripsThisYear = (traveler) => {
+  let confirmedTrips = traveler.pastTrips.concat(traveler.upcomingTrips)
+  let tripsThisYear = tripsForThisYear(confirmedTrips);
+  return tripsThisYear.reduce((totalSpent, trip) => {
+    return totalSpent += (trip.calculateCostOfTrip() * 1.1);
+  }, 0)
 }
 
 function updateTotalCost() {
-  //fix calculation on this
   let duration = $('#duration').val();
   let travelers = $('#travelers').val();
 
@@ -315,16 +250,8 @@ let submitNewTripRequest = () => {
   })
   .then(response => response.json())
   .then(data => console.log(data))
-  .then(displayNavigationOptions)
+  .then(domUpdates.displayNavigationOptions)
   .catch(error => console.log(error))
 }
 
-function displayNavigationOptions() {
-  $('main').html(`<p>Your trip has been booked successfully!</p>
-    <a id="back-to-booking-page" href="" aria-label="Click here to book another trip"><p>Book another trip</p></a>
-    <a href="" aria-label="Click here for your dashboard"><p>Back to your dashboard</p></a>`)
-    $('#back-to-booking-page').on('click', domUpdates.displayBookingPage)
-}
-
-
-export { signInAdmin, createDestinationCard }
+export { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, submitNewTripRequest, incomeGeneratedThisYear, moneySpentOnTripsThisYear }
