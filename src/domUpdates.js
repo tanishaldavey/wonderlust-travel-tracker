@@ -1,5 +1,6 @@
 import $ from 'jquery';
-import { signInAdmin, allDestinations } from './index.js';
+import Trip from './Trip.js'
+import { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, submitNewTripRequest } from './index.js';
 
 let domUpdates = {
   //TRAVELER FUNCTIONALITY
@@ -113,9 +114,12 @@ let domUpdates = {
       $('input[id="duration"], input[id="travelers"], input[id="date"]').on('input', updateTotalCost);
       $('#submit-trip-btn').on('click', submitNewTripRequest)
   },
-
-
-
+  displayNavigationOptions() {
+    $('main').html(`<p>Your trip has been booked successfully!</p>
+      <a id="back-to-booking-page" href="" aria-label="Click here to book another trip"><p>Book another trip</p></a>
+      <a href="" aria-label="Click here for your dashboard"><p>Back to your dashboard</p></a>`)
+      $('#back-to-booking-page').on('click', domUpdates.displayBookingPage)
+  },
   //ADMIN FUNCTIONALITY
   displayAdminLogInScreen(event) {
     event.preventDefault();
@@ -132,13 +136,11 @@ let domUpdates = {
     $('#sign-in-form').css('margin-top', '5%');
     $('sign-in-form').css('height', '30%');
   },
-
   createAdminSignInButton() {
     $('#sign-in-form button').remove();
     $('#sign-in-form').append(`<button id="admin-sign-in" type='button'>Sign In</button>`)
     $('#admin-sign-in').on('click', signInAdmin);
   },
-
   createAgentDashboard(admin) {
     $('main').html(`<section>
       <h3>New Trip Requests</h3>
@@ -150,10 +152,28 @@ let domUpdates = {
       </section>`)
       $('main').css('height', 'auto');
   },
-
   createHeaderForAgentDashboard(admin) {
     $('header section').html(`<img src="./images/user.svg" alt="profile icon">
       <p>Admin</p>`);
+  },
+  displayAllPendingTripRequests() {
+    if (allData.trips.length) {
+      allData.trips.forEach(trip => {
+        trip = new Trip(trip, allData.destinations)
+        if (trip.status === 'pending')
+        $('.trips-to-approve').append(`<div id=${trip.id}>
+          <p>Traveler ID: ${trip.userID}</p>
+          <p>Date: ${trip.date}</p>
+          <p>Destination: ${trip.getDestinationName()}</p>
+          <p>Trip Commission: $${trip.calculateCostOfTrip() * .1}</p>
+          <p>${trip.status}</p>
+          <button class="approve-trip" type="button">Approve</button>
+          <button class="delete-trip" type="button">Deny</button>
+          </div>`);
+          $('.approve-trip').on('click', approveTrip);
+          $('.delete-trip').on('click', denyTrip);
+      })
+    }
   }
 }
 

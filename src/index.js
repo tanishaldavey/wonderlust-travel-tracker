@@ -34,7 +34,6 @@ $('#sign-in-submit').on('click', signInTraveler);
 $('#admin-log-in').on('click', domUpdates.displayAdminLogInScreen);
 $('#admin-log-in').on('click', domUpdates.createAdminSignInButton);
 
-
 $(document).ready(() => {
   Promise.all([travlersData, destinationsData, tripsData])
     .then(data => {
@@ -134,32 +133,12 @@ function signInAdmin() {
       let agent = new TravelAgent(allData.trips);
       domUpdates.createAgentDashboard(agent);
       domUpdates.createHeaderForAgentDashboard(agent);
-      displayAllPendingTripRequests();
+      domUpdates.displayAllPendingTripRequests();
       displayIncomeGenerated();
     } else {
       alert('Your username or passowrd is not correct.');
     }
   }
-
-function displayAllPendingTripRequests() {
-  if (allData.trips.length) {
-    allData.trips.forEach(trip => {
-      trip = new Trip(trip, allData.destinations)
-      if (trip.status === 'pending')
-      $('.trips-to-approve').append(`<div id=${trip.id}>
-        <p>Traveler ID: ${trip.userID}</p>
-        <p>Date: ${trip.date}</p>
-        <p>Destination: ${trip.getDestinationName()}</p>
-        <p>Trip Commission: $${trip.calculateCostOfTrip() * .1}</p>
-        <p>${trip.status}</p>
-        <button class="approve-trip" type="button">Approve</button>
-        <button class="delete-trip" type="button">Deny</button>
-        </div>`);
-        $('.approve-trip').on('click', approveTrip);
-        $('.delete-trip').on('click', denyTrip);
-    })
-  }
-}
 
 let createTripApprovalData = () => {
   let tripId = event.target.parentElement.id;
@@ -211,7 +190,6 @@ let denyTrip = () => {
   .then(removeTripAfterPermissionUpdate(tripInfo.id))
   .catch(error => console.log(error))
 }
-
 
 function getTripsForThisYear() {
   let currentYear = new Date().getFullYear();
@@ -271,16 +249,8 @@ let submitNewTripRequest = () => {
   })
   .then(response => response.json())
   .then(data => console.log(data))
-  .then(displayNavigationOptions)
+  .then(domUpdates.displayNavigationOptions)
   .catch(error => console.log(error))
 }
 
-function displayNavigationOptions() {
-  $('main').html(`<p>Your trip has been booked successfully!</p>
-    <a id="back-to-booking-page" href="" aria-label="Click here to book another trip"><p>Book another trip</p></a>
-    <a href="" aria-label="Click here for your dashboard"><p>Back to your dashboard</p></a>`)
-    $('#back-to-booking-page').on('click', domUpdates.displayBookingPage)
-}
-
-
-export { signInAdmin, allDestinations }
+export { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, submitNewTripRequest }
