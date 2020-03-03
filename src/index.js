@@ -51,7 +51,7 @@ $(document).ready(() => {
 
 let allDestinations = () => {
   return allData.destinations.map(destinationData => {
-     return destination = new Destination(destinationData)
+    return  destination = new Destination(destinationData)
   });
 };
 
@@ -141,9 +141,8 @@ function signInAdmin() {
     }
   }
 
-//listNewTripRequests is the method to use
 function displayAllPendingTripRequests() {
-  if (allData.trips.length !== 0) {
+  if (allData.trips.length) {
     allData.trips.forEach(trip => {
       trip = new Trip(trip, allData.destinations)
       if (trip.status === 'pending')
@@ -214,9 +213,6 @@ let denyTrip = () => {
 }
 
 
-
-
-
 function getTripsForThisYear() {
   let currentYear = new Date().getFullYear();
   return allTrips().filter(trip => {
@@ -236,19 +232,6 @@ function calculateIncomeGeneratedThisYear() {
 
 function displayIncomeGenerated() {
   $('.total-income').append(`<p>$${calculateIncomeGeneratedThisYear()}</p>`).css('text-align', 'center');
-}
-
-function createDestinationCard() {
-  allDestinations().forEach(destination => {
-    $('.all-destination-cards').append(`<div id=${destination.id} class="destination">
-      <p>${destination.name}</p>
-      <img class="destination-img" src="${destination.image}" alt=${destination.alt}>
-      <p>Lodging Per Day: $${destination.estimatedLodgingCostPerDay}.00</p>
-      <p>Flight Per Person: $${destination.estimatedFlightCostPerPerson}.00</p>
-      <button class='trip-booking-btn'>Book This Trip<button>`)
-  });
-  $('main').css('height', 'auto');
-  $('.trip-booking-btn').on('click', displayBookingForm);
 }
 
 function displayBookingForm() {
@@ -278,7 +261,6 @@ function displayBookingForm() {
 }
 
 function updateTotalCost() {
-  //fix calculation on this
   let duration = $('#duration').val();
   let travelers = $('#travelers').val();
 
@@ -327,4 +309,4 @@ function displayNavigationOptions() {
 }
 
 
-export { signInAdmin, createDestinationCard }
+export { signInAdmin, allDestinations }

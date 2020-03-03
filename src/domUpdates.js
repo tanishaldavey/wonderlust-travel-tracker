@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { signInAdmin, createDestinationCard } from './index.js';
+import { signInAdmin, allDestinations } from './index.js';
 
 let domUpdates = {
   //TRAVELER FUNCTIONALITY
@@ -28,13 +28,6 @@ let domUpdates = {
       $('main').css('height', '100vh');
       $('#booking-page-btn').on('click', domUpdates.displayBookingPage);
   },
-
-  displayBookingPage() {
-    event.preventDefault();
-    $('main').html(`<section class="all-destination-cards"></section>`)
-    createDestinationCard();
-  },
-
   createHeaderForTravelerDashboard(traveler) {
     $('header section').css('width', '30%')
     $('header section').css('justify-content', 'flex-end')
@@ -42,7 +35,6 @@ let domUpdates = {
       <p>${traveler.name}</p>`)
     $('header section p').css('margin-left', '-5%')
   },
-
   insertPastTrips(traveler) {
     if (traveler.pastTrips.length !== 0) {
       traveler.pastTrips.forEach(trip => {
@@ -55,7 +47,6 @@ let domUpdates = {
       $('.past-trips').append(`<p>You don't have any past trips.</p>`).css('text-align', 'center');
     }
   },
-
   insertUpcomingTrips(traveler) {
     if (traveler.upcomingTrips.length !== 0) {
       traveler.upcomingTrips.forEach(trip => {
@@ -68,7 +59,6 @@ let domUpdates = {
       $('.upcoming-trips').append(`<p>You don't have any upcoming trips.</p>`).css('text-align', 'center');
     }
   },
-
   insertPendingTrips(traveler) {
     if (traveler.pendingTrips.length !== 0) {
       traveler.pendingTrips.forEach(trip => {
@@ -81,6 +71,27 @@ let domUpdates = {
       $('.pending-trips').append(`<p>You don't have any pending trips.</p>`).css('text-align', 'center');
     }
   },
+  displayBookingPage() {
+    event.preventDefault();
+    $('main').html(`<section class="all-destination-cards"></section>`)
+    domUpdates.createDestinationCard();
+  },
+  createDestinationCard() {
+    allDestinations().forEach(destination => {
+      $('.all-destination-cards').append(`<div id=${destination.id} class="destination">
+        <p>${destination.name}</p>
+        <img class="destination-img" src="${destination.image}" alt=${destination.alt}>
+        <p>Lodging Per Day: $${destination.estimatedLodgingCostPerDay}.00</p>
+        <p>Flight Per Person: $${destination.estimatedFlightCostPerPerson}.00</p>
+        <button class='trip-booking-btn'>Book This Trip<button>`)
+    });
+    $('main').css('height', 'auto');
+    $('.trip-booking-btn').on('click', displayBookingForm);
+  },
+
+
+
+
   //ADMIN FUNCTIONALITY
   displayAdminLogInScreen(event) {
     event.preventDefault();
