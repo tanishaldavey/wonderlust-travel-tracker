@@ -24,6 +24,7 @@ let domUpdates = {
         </section>
       </section>`)
       $('.traveler-dashboard #yearly-total-spent-on-trips').css('text-align', 'right');
+      $('main').attr('id', `${traveler.id}`)
       $('main').css('height', '100vh');
       $('#booking-page-btn').on('click', domUpdates.displayBookingPage);
   },

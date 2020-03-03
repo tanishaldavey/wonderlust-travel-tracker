@@ -13,7 +13,6 @@ import './images/user.svg'
 //DOMUPDATES
 import domUpdates from './domUpdates.js'
 
-
 const travlersData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/travelers/travelers')
   .then(response => response.json())
   .then(data => data.travelers)
@@ -130,11 +129,6 @@ function signInTraveler() {
   }
 }
 
-function displayBookingPage() {
-  // event.preventDefault();
-  console.log('helloooo');
-}
-
 function signInAdmin() {
     if ($('#user').val() === 'agency' && $('#password').val() === 'travel2020') {
       let agent = new TravelAgent(allData.trips);
@@ -145,19 +139,90 @@ function signInAdmin() {
     }
   }
 
-
-
 //should probably be moved to a DOMupdates.js file
 function createDestinationCard() {
   allDestinations().forEach(destination => {
-    $('.all-destination-cards').append(`<div class="destination">
+    $('.all-destination-cards').append(`<div id=${destination.id} class="destination">
       <p>${destination.name}</p>
       <img class="destination-img" src="${destination.image}" alt=${destination.alt}>
       <p>Lodging Per Day: $${destination.estimatedLodgingCostPerDay}.00</p>
       <p>Flight Per Person: $${destination.estimatedFlightCostPerPerson}.00</p>
-      <button id="book-trip-btn">Book This Trip<button>`)
+      <button class='trip-booking-btn'>Book This Trip<button>`)
   });
   $('main').css('height', 'auto');
+  $('.trip-booking-btn').on('click', displayBookingForm);
+}
+
+function displayBookingForm() {
+  let destinationID = event.target.parentElement.id;
+  let destination = allDestinations()[destinationID - 1];
+  $('main').html(`<section id=${destination.id}>
+      <form id="booking-trip-form">
+      <p>Book a trip to <span>${destination.name}</span><p>
+      <label for="date">Date
+        <input id="date" type="date">
+      </label>
+      <label for="duration"> Duration
+        <input id="duration" type="number">
+      </label>
+      <label for="travelers">Number of Travelers
+        <input id="travelers" type="number">
+      </label>
+      <button id="submit-trip-btn" type="button">Submit Trip</button>
+      <button id="cancel-booking" type="button">Cancel</button>
+      </form>
+      </section>`)
+    $('main').css('height', '90vh');
+    $('main').append(`<section class="display-trip-cost"></section>`)
+    $('#cancel-booking').on('click', domUpdates.displayBookingPage);
+    $('input[id="duration"], input[id="travelers"], input[id="date"]').on('input', updateTotalCost);
+    $('#submit-trip-btn').on('click', submitNewTripRequest)
+}
+
+function updateTotalCost() {
+  //fix calculation on this
+  let duration = $('#duration').val();
+  let travelers = $('#travelers').val();
+  console.log($('#date').val());
+
+  $('.display-trip-cost').html(`<p>Total Cost of Lodging For This Trip: $${travelers * duration * 500}.00</p>
+    <p>Total Cost of Flights For This Trip: $${travelers * 500}.00</p>
+    <p>Travel Agent's 10% Fee: $${((duration * travelers * 500) + (travelers * 500)) * .1}.00</p>
+    <p>Total Cost of this Trip:<p>`)
+}
+
+function createPostRequestData() {
+  let destinationID = event.target.parentElement.parentElement.parentElement.id;
+  let userID = event.target.parentElement.parentElement.parentElement.parentElement.id;
+  let tripData = {
+     "id": Date.now(),
+     "userID": parseInt(userID),
+     "destinationID": parseInt(destinationID),
+     "travelers": parseInt($('#travelers').val()),
+     "date": $('#date').val().split('-').join('/'),
+     "duration": parseInt($('#duration').val()),
+     "status": "pending",
+     "suggestedActivities": []
+   };
+  return tripData;
+}
+
+let generateRandomID = () => {
+  return Math.random().toString(36).substr(2, 9);
+}
+
+let submitNewTripRequest = () => {
+  let tripInfo = createPostRequestData()
+  fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/trips/trips', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(tripInfo)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .then(error => console.log(error))
 }
 
 
