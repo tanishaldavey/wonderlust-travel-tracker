@@ -147,18 +147,30 @@ function displayAllPendingTripRequests() {
     allData.trips.forEach(trip => {
       trip = new Trip(trip, allData.destinations)
       if (trip.status === 'pending')
-      $('.trips-to-approve').append(`<div>
+      $('.trips-to-approve').append(`<div id=${trip.id}>
         <p>${trip.date}</p>
         <p>${trip.getDestinationName()}</p>
-        <p>Trip Cost w/Commission: $${trip.calculateCostOfTrip() * .1}</p>
+        <p>Trip Commission: $${trip.calculateCostOfTrip() * .1}</p>
         <p>${trip.status}</p>
-        <button id="approve-trip" type="button">Approve</button>
-        <button id="delete-trip" type="button"><Deny</button>
+        <button class="approve-trip" type="button">Approve</button>
+        <button class="delete-trip" type="button">Deny</button>
         </div>`);
-
+        $('.approve-trip').on('click', createTripApprovalData);
+        // $('.delete-trip').on('click', createTripDenialData);
     })
   }
 }
+
+function createTripApprovalData() {
+  let tripId = event.target.parentElement.id;
+  let tripData = {
+    "id": parseInt(tripId),
+    "status": "approved"
+  }
+  return tripData;
+}
+
+
 
 function getTripsForThisYear() {
   let currentYear = new Date().getFullYear();
@@ -232,7 +244,7 @@ function updateTotalCost() {
     <p>Total Cost of this Trip:<p>`)
 }
 
-function createPostRequestData() {
+function createTripBookingData() {
   let destinationID = event.target.parentElement.parentElement.parentElement.id;
   let userID = event.target.parentElement.parentElement.parentElement.parentElement.id;
   let tripData = {
@@ -249,7 +261,7 @@ function createPostRequestData() {
 }
 
 let submitNewTripRequest = () => {
-  let tripInfo = createPostRequestData()
+  let tripInfo = createTripBookingData()
   fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/trips/trips', {
     method: 'POST',
     headers: {
