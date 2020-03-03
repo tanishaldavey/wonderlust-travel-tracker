@@ -195,12 +195,12 @@ function createPostRequestData() {
   let destinationID = event.target.parentElement.parentElement.parentElement.id;
   let userID = event.target.parentElement.parentElement.parentElement.parentElement.id;
   let tripData = {
-     "id": generateRandomID(),
-     "userID": userID,
-     "destinationID": destinationID,
-     "travelers": $('#travelers').val(),
+     "id": Date.now(),
+     "userID": parseInt(userID),
+     "destinationID": parseInt(destinationID),
+     "travelers": parseInt($('#travelers').val()),
      "date": $('#date').val().split('-').join('/'),
-     "duration": $('#duration').val(),
+     "duration": parseInt($('#duration').val()),
      "status": "pending",
      "suggestedActivities": []
    };
