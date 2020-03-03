@@ -1,12 +1,13 @@
 import $ from 'jquery';
 import Trip from './Trip.js'
-import { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, submitNewTripRequest } from './index.js';
+import { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, submitNewTripRequest, incomeGeneratedThisYear, moneySpentOnTripsThisYear } from './index.js';
 
 let domUpdates = {
   //TRAVELER FUNCTIONALITY
   createTravelerDashboard(traveler) {
+    console.log(traveler);
     $('main').html(`<section class="traveler-dashboard">
-        <p>$total spent this year on trips</p>
+        <p>$${Math.round(moneySpentOnTripsThisYear(traveler))} spent this year on trips</p>
         <button id="booking-page-btn" type="button">Book New Trip<button>
       </section>
       <section class="display-trips pending-trips">
@@ -177,6 +178,9 @@ let domUpdates = {
   },
   removeTripAfterPermissionUpdate(tripId) {
     $(`div[id=${tripId}]`).remove();
+  },
+  displayIncomeGenerated() {
+    $('.total-income').append(`<p>$${Math.round(incomeGeneratedThisYear())}.00</p>`).css('text-align', 'center');
   }
 }
 
