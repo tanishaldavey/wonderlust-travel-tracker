@@ -123,6 +123,7 @@ function signInTraveler() {
     domUpdates.insertPastTrips(currentTraveler);
     domUpdates.insertUpcomingTrips(currentTraveler);
     domUpdates.insertPendingTrips(currentTraveler);
+    ;
   } else {
     alert('Your username or passowrd is not correct.')
   }
@@ -134,7 +135,7 @@ function signInAdmin() {
       domUpdates.createAgentDashboard(agent);
       domUpdates.createHeaderForAgentDashboard(agent);
       domUpdates.displayAllPendingTripRequests();
-      displayIncomeGenerated();
+      domUpdates.displayIncomeGenerated();
     } else {
       alert('Your username or passowrd is not correct.');
     }
@@ -164,10 +165,6 @@ let approveTrip = () => {
   .catch(error => console.log(error))
 }
 
-// function removeTripAfterPermissionUpdate(tripId) {
-//   $(`div[id=${tripId}]`).remove();
-// }
-
 let createTripDenialData = () => {
   let tripId = event.target.parentElement.id;
   let tripData = {
@@ -191,16 +188,16 @@ let denyTrip = () => {
   .catch(error => console.log(error))
 }
 
-function getTripsForThisYear() {
+let tripsForThisYear = (trips) => {
   let currentYear = new Date().getFullYear();
-  return allTrips().filter(trip => {
+  return trips.filter(trip => {
     let tripYear = parseInt(trip.date.slice(0, 4));
     return tripYear === currentYear;
   });
 }
-//function needs to do trips that are this year 2020!!
-function calculateIncomeGeneratedThisYear() {
-  let tripsThisYear = getTripsForThisYear()
+
+let incomeGeneratedThisYear = () => {
+  let tripsThisYear = tripsForThisYear(allTrips())
     return tripsThisYear.reduce((totalIncome, trip) => {
       trip = new Trip(trip, allData.destinations)
       totalIncome += (trip.calculateCostOfTrip() * .1);
@@ -208,8 +205,12 @@ function calculateIncomeGeneratedThisYear() {
     }, 0);
   }
 
-function displayIncomeGenerated() {
-  $('.total-income').append(`<p>$${calculateIncomeGeneratedThisYear()}</p>`).css('text-align', 'center');
+let moneySpentOnTripsThisYear = (traveler) => {
+  let confirmedTrips = traveler.pastTrips.concat(traveler.upcomingTrips)
+  let tripsThisYear = tripsForThisYear(confirmedTrips);
+  return tripsThisYear.reduce((totalSpent, trip) => {
+    return totalSpent += (trip.calculateCostOfTrip() * 1.1);
+  }, 0)
 }
 
 function updateTotalCost() {
@@ -253,4 +254,4 @@ let submitNewTripRequest = () => {
   .catch(error => console.log(error))
 }
 
-export { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, submitNewTripRequest }
+export { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, submitNewTripRequest, incomeGeneratedThisYear, moneySpentOnTripsThisYear }
