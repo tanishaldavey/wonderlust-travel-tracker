@@ -30,7 +30,7 @@ header p {
 // STYLING FOR LANDING PAGE MAIN
 main {
   background: url('../images/jessica-f-973vRak-llM-unsplash.jpg') center center / cover no-repeat;
-  height: 90vh;
+  height: $full-height;
   padding: 0 2em;
   position: relative;
   z-index: 1;
@@ -94,6 +94,10 @@ form input {
 #sign-in-form p {
   font-size: 1.2em;
   margin-top: 2%;
+}
+
+#admin-sign-in {
+  width: 100%;
 }
 
 //DASHBOARD FOR A TRAVELER
