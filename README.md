@@ -14,7 +14,9 @@ Wonderlust travel tracker is an appication built using JavaScript. jQuery and SA
 
 **For a traveler**
 
-username: traveler[number] *Number can be any number 1-50
+username: traveler[number] 
+
+(_Number_)can be any number 1-50
   
 passowrd: travel2020
   
