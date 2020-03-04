@@ -169,7 +169,7 @@ let domUpdates = {
       <h3>Travelers on Trips Today:</h3>
       <section></section>
       </section>`)
-      $('main').css('height', '$auto-height');
+      $('main').css('height', 'auto');
       $('#search').on('click', searchServerForTraveler)
   },
   createHeaderForAgentDashboard() {
