@@ -142,6 +142,7 @@ function signInAdmin() {
   }
 
 let createTripApprovalData = () => {
+  console.log(event);
   let tripId = event.target.parentElement.id;
   let tripData = {
     "id": parseInt(tripId),
@@ -244,4 +245,58 @@ let submitNewTripRequest = () => {
   .catch(error => console.log(error))
 }
 
-export { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, submitNewTripRequest, incomeGeneratedThisYear, moneySpentOnTripsThisYear }
+function searchServerForTraveler() {
+  if ($('#search-input').val()) {
+    let id = parseInt($('#search-input').val());
+    fetch(`https://fe-apps.herokuapp.com/api/v1/travel-tracker/1911/travelers/travelers/${id}`)
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .then(getSearchedTravelerResults(id))
+      .catch(error => console.log(error))
+  }
+}
+
+function getSearchedTravelerResults(userID) {
+  let travelers = updateTravelerProperties();
+  let searchedTraveler = travelers[userID - 1];
+  $('#search-input').val('')
+  $('main').css('height', 'auto')
+  $('main').css('min-heigh', '90vh')
+  $('.dashboard-info').html(`<h3>Traveler Name: ${searchedTraveler.name}</h3>
+    <h4>New Trip Requests</h4>
+    <section id="search-traveler-pending-trips"></section>
+    <h4>Upcoming Trips</h4>
+    <section id="search-traveler-upcoming-trips"></section>
+    <h4>Past Trips</h4>
+    <section id="search-traveler-past-trips"></section>`)
+    displaySingleTravelerTripsOnAdminDashboard(searchedTraveler, searchedTraveler.pastTrips, `#search-traveler-past-trips`);
+    displaySingleTravelerTripsOnAdminDashboard(searchedTraveler, searchedTraveler.upcomingTrips, `#search-traveler-upcoming-trips`);
+    displayTripPermissionButtons(searchedTraveler)
+  }
+
+function displaySingleTravelerTripsOnAdminDashboard(traveler, tripTime, section) {
+    tripTime.forEach(trip => {
+      $(section).append(`<p>${trip.tripDestinationName}</p>
+        <p>${trip.date}<p>
+        <p>Total Spent: $${trip.calculateCostOfTrip() * 1.1}</p>`)
+    })
+  }
+
+function displayTripPermissionButtons(traveler) {
+    if (traveler.pendingTrips) {
+      traveler.pendingTrips.forEach(trip => {
+        $('#search-traveler-pending-trips').html(`<div id=${trip.id}>
+          <p>${trip.tripDestinationName}</p>
+          <p>${trip.date}</p>
+          <p>Total Spent: $${trip.calculateCostOfTrip() * 1.1}</p>
+          <button class="approve-trip-2" type="button">Approve</button>
+          <button class="delete-trip-2" type="button">Deny</button>
+        </div>`)
+        $('.approve-trip-2').on('click', approveTrip);
+        $('.delete-trip-2').on('click', denyTrip);
+      })
+    }
+  }
+
+
+export { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, submitNewTripRequest, incomeGeneratedThisYear, moneySpentOnTripsThisYear, searchServerForTraveler }

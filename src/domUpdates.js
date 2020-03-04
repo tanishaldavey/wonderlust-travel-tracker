@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import Trip from './Trip.js'
-import { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, submitNewTripRequest, incomeGeneratedThisYear, moneySpentOnTripsThisYear } from './index.js';
+import { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, incomeGeneratedThisYear, moneySpentOnTripsThisYear, createTripBookingData, searchServerForTraveler, submitNewTripRequest } from './index.js';
 
 let domUpdates = {
   //TRAVELER FUNCTIONALITY
@@ -112,8 +112,7 @@ let domUpdates = {
       $('main').append(`<section class="display-trip-cost"></section>`)
       $('#cancel-booking').on('click', domUpdates.displayBookingPage);
       $('input[id="duration"], input[id="travelers"], input[id="date"]').on('input', domUpdates.updateTotalCost);
-      $('#submit-trip-btn').on('click', submitNewTripRequest)
-
+      $('#submit-trip-btn').on('click', submitNewTripRequest);
   },
   updateTotalCost() {
     let duration = $('#duration').val();
@@ -155,7 +154,11 @@ let domUpdates = {
     $('#admin-sign-in').on('click', signInAdmin);
   },
   createAgentDashboard(admin) {
-    $('main').html(`<section>
+    $('main').html(`<div>
+        <input id="search-input" type="text">
+        <button id="search" type="button">Search</button>
+      </div>
+      <section class="dashboard-info">
       <h3>New Trip Requests</h3>
       <section class="trips-to-approve"></section>
       <h3>Total Income Generated This Year</h3>
@@ -164,6 +167,7 @@ let domUpdates = {
       <section></section>
       </section>`)
       $('main').css('height', 'auto');
+      $('#search').on('click', searchServerForTraveler)
   },
   createHeaderForAgentDashboard(admin) {
     $('header section').html(`<img src="./images/user.svg" alt="profile icon">
