@@ -102,10 +102,10 @@ let domUpdates = {
           <input id="date" type="date">
         </label>
         <label for="duration"> Duration
-          <input id="duration" type="number">
+          <input id="duration" type="number" min="0">
         </label>
         <label for="travelers">Number of Travelers
-          <input id="travelers" type="number">
+          <input id="travelers" type="number" min="0">
         </label>
         <button id="submit-trip-btn" type="button">Submit Trip</button>
         <button id="cancel-booking" type="button">Cancel</button>
