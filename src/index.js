@@ -277,7 +277,8 @@ function getSearchedTravelerResults(userID) {
 function displaySingleTravelerTripsOnAdminDashboard(traveler, tripTime, section) {
     tripTime.forEach(trip => {
       $(section).append(`<p>${trip.tripDestinationName}</p>
-        <p>${trip.date}<p>`)
+        <p>${trip.date}<p>
+        <p>Total Spent: $${trip.calculateCostOfTrip() * 1.1}</p>`)
     })
   }
 
@@ -287,7 +288,7 @@ function displayTripPermissionButtons(traveler) {
         $('#search-traveler-pending-trips').html(`<div id=${trip.id}>
           <p>${trip.tripDestinationName}</p>
           <p>${trip.date}</p>
-
+          <p>Total Spent: $${trip.calculateCostOfTrip() * 1.1}</p>
           <button class="approve-trip-2" type="button">Approve</button>
           <button class="delete-trip-2" type="button">Deny</button>
         </div>`)
