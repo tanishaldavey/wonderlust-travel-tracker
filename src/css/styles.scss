@@ -1,38 +1,13 @@
 @import 'base';
 
-// GENERAL STYLING FOR PAGE
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 10vh 1fr 1fr 1fr;
-  grid-template-areas:
-    "header"
-    "main"
-    "featured-destinations"
-    "about";
-  height: 100vh;
-  width: 100vw;
-}
-
-
 // STYLING FOR HEADER
 header {
-  background: #f0efe2;
-  display: flex;
+  @include justifyFlexedContainer(space-between);
   font-size: 1.5em;
-  justify-content: space-between;
   padding: 0 2%;
 }
 
 #logo {
-  // border-left: 4px solid #ff9369;
-  // border-top: 4px solid #ff9369;
   color: #7b8a56;
   font-size: 2em;
   margin-top: .5%;
@@ -43,8 +18,7 @@ header {
 }
 
 header section {
-  display: flex;
-  justify-content: space-between;
+  @include justifyFlexedContainer(space-between);
   padding: 1.5% 0;
   width: 15%;
 }
@@ -52,31 +26,17 @@ header section {
 header p {
   color: #3d452b;
 }
-//
-// #sign-in {
-//   background: red;
-//   color: white;
-//   cursor: pointer;
-//   font-size: .8em;
-//   border: none;
-//   width: 30%;
-//
-//   &:hover {
-//     transform: scale(1.1);
-//   }
-// }
 
 // STYLING FOR LANDING PAGE MAIN
 main {
   background: url('../images/jessica-f-973vRak-llM-unsplash.jpg') center center / cover no-repeat;
-  height: 90vh;
+  height: $full-height;
   padding: 0 2em;
   position: relative;
   z-index: 1;
 }
 
 h1 {
-  color: #f0efe2;
   font-size: 15em;
   text-align: center;
   text-shadow: 1px 1px 1px #000,
@@ -84,7 +44,6 @@ h1 {
 }
 
 h3 {
-  color: #f0efe2;
   font-style: italic;
   font-size: 2em;
   margin-top: 8%;
@@ -94,18 +53,15 @@ h3 {
 //STYLING FOR SIGN IN FORM
 #sign-in-form,
 #booking-trip-form {
-  background:  #f0efe2;
-  border-radius: 4px;
+  @include centerItemOnXAxis(-2%, 0);
   height: 38%;
   justify-content: space-between;
   width: 30%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: -2%;
   position: relative;
   padding: 2%;
   z-index: 2;
 }
+
 #sign-in-form h2 {
   color: #000;
   font-size: 1.5em;
@@ -119,23 +75,17 @@ form {
 }
 
 form input {
+  @include centerItemOnXAxis(0, 2%);
+  @include itemHeightWidth(2em, 100%);
   border: 2px solid #ccccc5;
-	border-radius: 5px;
 	caret-color: #DC5D58;
 	font-size: 1.5em;
-	height: 2em;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 2%;
 	padding-left: .5em;
-  width: 100%;
 }
 
 #sign-in-form form button,
 #admin-sign-in {
 	background: #DC5D58;
-	border: 0;
-	border-radius: 3px;
 	color: white;
 	font-size: 1.5em;
 	height: 2.2em;
@@ -146,17 +96,19 @@ form input {
   margin-top: 2%;
 }
 
+#admin-sign-in {
+  width: 100%;
+}
+
 //DASHBOARD FOR A TRAVELER
 .traveler-dashboard p {
   font-size: 2em;
   margin-bottom: 2%;
 }
+
 .display-trips {
-  background: #f0efe2;
-  border-radius: 4px;
-  height: 27%;
-  margin: 0 auto 2% auto;
-  width: 90%;
+  @include centerItemOnXAxis(0, 2%);
+  @include itemHeightWidth(27%, 90%);
 }
 
 .display-trips h3 {
@@ -165,29 +117,30 @@ form input {
 }
 
 .trip-info {
-  display: flex;
+  @include justifyFlexedContainer(space-around);
   flex-direction: row;
-  justify-content: space-around;
   overflow: scroll;
+}
+
+.traveler-dashboard {
+  @include justifyFlexedContainer(space-between);
 }
 
 //DESTINATION BOOKING PAGE
 .all-destination-cards {
-  display: flex;
+  @include justifyFlexedContainer(space-around)
   flex-wrap: wrap;
-  justify-content: space-around;
 }
+
 .destination {
-  background: #F0EFE2;
-  height: 18em;
+  @include itemHeightWidth(18em, 25%);
   margin: .5% .5%;
   padding: 1% 1% 1% 3%;
-  width: 25%;
 }
+
 .destination-img {
-  height: auto;
+  @include itemHeightWidth(auto, 95%);
   max-height: 60%;
-  width: 95%;
 }
 
 //SUBMIT TRIP FORM
@@ -197,4 +150,11 @@ form input {
 
 span {
   font-weight: bold;
+}
+
+#cancel-booking,
+.delete-trip {
+  color: #DC5D58;
+  background: none;
+  text-decoration: underline;
 }
