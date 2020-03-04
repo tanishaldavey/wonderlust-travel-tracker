@@ -135,6 +135,7 @@ function signInAdmin() {
       domUpdates.createHeaderForAgentDashboard(agent);
       domUpdates.displayAllPendingTripRequests();
       domUpdates.displayIncomeGenerated();
+      domUpdates.displayTravelersOnTripsToday(agent);
     } else {
       alert('Your username or passowrd is not correct.');
     }
