@@ -17,5 +17,5 @@ Wonderlust travel tracker is an appication built using JavaScript. jQuery and SA
 1. Run `npm start` to use the server
 
 ## Additional Notes
-There are some issues that are oustanding, mostly around styling. See the issues tab for more information. 
+There are some issues that are oustanding, mostly around styling. See those issues [here](https://github.com/tanishalatoya/wonderlust-travel-tracker/issues). 
 
