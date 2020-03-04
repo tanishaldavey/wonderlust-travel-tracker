@@ -1,4 +1,6 @@
 import $ from 'jquery';
+import './css/base.scss';
+import './css/styles.scss';
 import Trip from './Trip.js'
 import { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, incomeGeneratedThisYear, moneySpentOnTripsThisYear, createTripBookingData, searchServerForTraveler, submitNewTripRequest } from './index.js';
 
@@ -26,12 +28,13 @@ let domUpdates = {
       </section>`)
       $('.traveler-dashboard #yearly-total-spent-on-trips').css('text-align', 'right');
       $('main').attr('id', `${traveler.id}`)
-      $('main').css('height', '100vh');
+      $('main').css('height', '$full-height');
       $('#booking-page-btn').on('click', domUpdates.displayBookingPage);
   },
   createHeaderForTravelerDashboard(traveler) {
     $('header section').css('width', '30%')
-    $('header section').css('justify-content', 'flex-end')
+    // $('header section').css('justify-content', 'flex-end')
+    $('header section').css('@include justifyFlexedContainer(flex-end)')
     $('header section').html(`<img src="./images/user.svg" alt="profile icon">
       <p>${traveler.name}</p>`)
     $('header section p').css('margin-left', '-5%')
@@ -86,7 +89,7 @@ let domUpdates = {
         <p>Flight Per Person: $${destination.estimatedFlightCostPerPerson}.00</p>
         <button class='trip-booking-btn'>Book This Trip<button>`)
     });
-    $('main').css('height', 'auto');
+    $('main').css('height', '$auto-height');
     $('.trip-booking-btn').on('click', domUpdates.displayBookingForm);
   },
   displayBookingForm() {
@@ -108,7 +111,7 @@ let domUpdates = {
         <button id="cancel-booking" type="button">Cancel</button>
         </form>
         </section>`)
-      $('main').css('height', '90vh');
+      $('main').css('height', '$full-height');
       $('main').append(`<section class="display-trip-cost"></section>`)
       $('#cancel-booking').on('click', domUpdates.displayBookingPage);
       $('input[id="duration"], input[id="travelers"], input[id="date"]').on('input', domUpdates.updateTotalCost);
@@ -166,7 +169,7 @@ let domUpdates = {
       <h3>Travelers on Trips Today:</h3>
       <section></section>
       </section>`)
-      $('main').css('height', 'auto');
+      $('main').css('height', '$auto-height');
       $('#search').on('click', searchServerForTraveler)
   },
   createHeaderForAgentDashboard(admin) {
