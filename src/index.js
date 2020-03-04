@@ -123,7 +123,6 @@ function signInTraveler() {
     domUpdates.insertPastTrips(currentTraveler);
     domUpdates.insertUpcomingTrips(currentTraveler);
     domUpdates.insertPendingTrips(currentTraveler);
-    ;
   } else {
     alert('Your username or passowrd is not correct.')
   }
@@ -299,4 +298,4 @@ function displayTripPermissionButtons(traveler) {
   }
 
 
-export { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, submitNewTripRequest, incomeGeneratedThisYear, moneySpentOnTripsThisYear, searchServerForTraveler }
+export { signInAdmin, allDestinations, allData, approveTrip, denyTrip, submitNewTripRequest, incomeGeneratedThisYear, moneySpentOnTripsThisYear, searchServerForTraveler }

@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import spies from 'chai-spies';
 import Traveler from '../src/Traveler.js';
 
 let tripsData, travelerData, traveler1, traveler2, traveler3;

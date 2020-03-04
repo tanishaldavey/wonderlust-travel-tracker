@@ -2,7 +2,7 @@ import $ from 'jquery';
 import './css/base.scss';
 import './css/styles.scss';
 import Trip from './Trip.js'
-import { signInAdmin, allDestinations, allData, approveTrip, denyTrip, updateTotalCost, incomeGeneratedThisYear, moneySpentOnTripsThisYear, createTripBookingData, searchServerForTraveler, submitNewTripRequest } from './index.js';
+import { signInAdmin, allDestinations, allData, approveTrip, denyTrip, incomeGeneratedThisYear, moneySpentOnTripsThisYear, searchServerForTraveler, submitNewTripRequest } from './index.js';
 
 let domUpdates = {
   //TRAVELER FUNCTIONALITY
@@ -156,7 +156,7 @@ let domUpdates = {
     $('#sign-in-form').append(`<button id="admin-sign-in" type='button'>Sign In</button>`)
     $('#admin-sign-in').on('click', signInAdmin);
   },
-  createAgentDashboard(admin) {
+  createAgentDashboard() {
     $('main').html(`<div>
         <input id="search-input" type="text">
         <button id="search" type="button">Search</button>
@@ -172,7 +172,7 @@ let domUpdates = {
       $('main').css('height', '$auto-height');
       $('#search').on('click', searchServerForTraveler)
   },
-  createHeaderForAgentDashboard(admin) {
+  createHeaderForAgentDashboard() {
     $('header section').html(`<img src="./images/user.svg" alt="profile icon">
       <p>Admin</p>`);
   },
@@ -180,18 +180,19 @@ let domUpdates = {
     if (allData.trips.length) {
       allData.trips.forEach(trip => {
         trip = new Trip(trip, allData.destinations)
-        if (trip.status === 'pending')
-        $('.trips-to-approve').append(`<div id=${trip.id}>
-          <p>Traveler ID: ${trip.userID}</p>
-          <p>Date: ${trip.date}</p>
-          <p>Destination: ${trip.getDestinationName()}</p>
-          <p>Trip Commission: $${trip.calculateCostOfTrip() * .1}</p>
-          <p>${trip.status}</p>
-          <button class="approve-trip" type="button">Approve</button>
-          <button class="delete-trip" type="button">Deny</button>
-          </div>`);
-          $('.approve-trip').on('click', approveTrip);
-          $('.delete-trip').on('click', denyTrip);
+        if (trip.status === 'pending') {
+          $('.trips-to-approve').append(`<div id=${trip.id}>
+            <p>Traveler ID: ${trip.userID}</p>
+            <p>Date: ${trip.date}</p>
+            <p>Destination: ${trip.getDestinationName()}</p>
+            <p>Trip Commission: $${trip.calculateCostOfTrip() * .1}</p>
+            <p>${trip.status}</p>
+            <button class="approve-trip" type="button">Approve</button>
+            <button class="delete-trip" type="button">Deny</button>
+            </div>`);
+            $('.approve-trip').on('click', approveTrip);
+            $('.delete-trip').on('click', denyTrip);
+        }
       })
     }
   },
