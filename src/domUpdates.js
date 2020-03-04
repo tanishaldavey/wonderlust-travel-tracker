@@ -167,7 +167,7 @@ let domUpdates = {
       <h3>Total Income Generated This Year</h3>
       <section class="total-income"></section>
       <h3>Travelers on Trips Today:</h3>
-      <section></section>
+      <section class="travelers-today"></section>
       </section>`)
       $('main').css('height', 'auto');
       $('#search').on('click', searchServerForTraveler)
@@ -201,6 +201,9 @@ let domUpdates = {
   },
   displayIncomeGenerated() {
     $('.total-income').append(`<p>$${Math.round(incomeGeneratedThisYear())}.00</p>`).css('text-align', 'center');
+  },
+  displayTravelersOnTripsToday(admin) {
+    $('.travelers-today').append(`<p>${admin.getDailyNumberOfTravelers()}</p>`).css('text-align', 'center')
   }
 }
 
