@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import spies from 'chai-spies';
 import Trip from '../src/Trip.js';
 
 let tripData, destinationData, trip1, trip2;
@@ -91,14 +90,12 @@ describe('Trip', () => {
   it('should be able to calculate the cost of a trip', () => {
     trip1.calculateCostOfTrip();
     trip2.calculateCostOfTrip();
-
     expect(trip1.calculateCostOfTrip()).to.equal(8720);
     expect(trip2.calculateCostOfTrip()).to.equal(3060);
   });
 
   it('should be able to return the destination name associated with the trip', () => {
     trip1.getDestinationName();
-    
     expect(trip1.tripDestinationName).to.equal('Rome, Italy');
   });
 });
