@@ -100,7 +100,6 @@ describe('Traveler', () => {
     traveler1.getPastTrips();
     traveler2.getPastTrips();
     traveler3.getPastTrips();
-
     expect(traveler1.pastTrips).to.deep.equal([]);
     expect(traveler2.pastTrips).to.deep.equal([tripsData[3]]);
     expect(traveler3.pastTrips).to.deep.equal([]);
@@ -110,7 +109,6 @@ describe('Traveler', () => {
     traveler1.getPendingTrips();
     traveler2.getPendingTrips();
     traveler3.getPendingTrips();
-
     expect(traveler1.pendingTrips).to.deep.equal([]);
     expect(traveler2.pendingTrips).to.deep.equal([]);
     expect(traveler3.pendingTrips).to.deep.equal([tripsData[5]]);
@@ -120,19 +118,8 @@ describe('Traveler', () => {
     traveler1.getApprovedUpcomingTrips();
     traveler2.getApprovedUpcomingTrips();
     traveler3.getApprovedUpcomingTrips();
-
     expect(traveler1.upcomingTrips).to.deep.equal([tripsData[0]]);
     expect(traveler2.upcomingTrips).to.deep.equal([tripsData[1], tripsData[2], tripsData[4]]);
     expect(traveler3.upcomingTrips).to.deep.equal([]);
-  });
-
-  it('should be able to get the total cost of an approved trip, including travel agenet\'s 10% fee', () => {
-    traveler1.getTotalCostOfTrip();
-    traveler2.getTotalCostOfTrip();
-    traveler3.getTotalCostOfTrip();
-
-    expect(traveler1.getTotalCostOfTrip()).to.equal(6435);
-    expect(traveler2.getTotalCostOfTrip()).to.equal(191472);
-    expect(traveler3.getTotalCostOfTrip()).to.equal(18425);
   });
 });
