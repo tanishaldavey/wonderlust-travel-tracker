@@ -18,13 +18,16 @@ username: traveler<number> (any number 1 - 50)
   
 passowrd: travel2020
   
+
+![screencapture-localhost-8080-2020-03-04-05_07_54](https://user-images.githubusercontent.com/41553045/75878058-38781600-5dd6-11ea-9cdc-fa3b5dff4dcd.png)
+
+#### Login Information
+
 **For an administrator**
 
 username: agency
 
 password: travel2020
-
-![screencapture-localhost-8080-2020-03-04-05_07_54](https://user-images.githubusercontent.com/41553045/75878058-38781600-5dd6-11ea-9cdc-fa3b5dff4dcd.png)
 
 ## To Install
 1. Fork this repo and clone it down
